@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Base"/>
+
+    <style name="Theme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/theme_green_light</item>
+        <item name="colorPrimaryDark">@color/theme_green_dark</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Toolbar" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlHighlight">@color/theme_green_dark</item>
+    </style>
+
+    <style name="ToolbarPopup" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:itemTextAppearance">@style/ToolbarMenuItem</item>
+    </style>
+
+    <style name="ToolbarMenuItem">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+</resources>

@@ -1,0 +1,29 @@
+evaluationDependsOn(":compass:compass-api")
+
+apply plugin: 'java'
+
+dependencies {
+    def androidModule = project(':compass:compass-api')
+
+    testCompile project(path: ':compass:compass-api', configuration: 'debugCompile')
+
+    def debugVariant = androidModule.android.libraryVariants.find({it.name == 'debug'})
+    testCompile debugVariant.javaCompile.classpath
+    testCompile debugVariant.javaCompile.outputs.files
+    testCompile files(androidModule.android.getBootClasspath())
+
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.+'
+    testCompile 'org.easytesting:fest-assert:1.4'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.+'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.+'
+
+    testCompile 'com.squareup.okhttp:mockwebserver:2.4.0'
+}
+
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Should.class"
+    include "**/*Test.class"
+    include "**/*Tests.class"}

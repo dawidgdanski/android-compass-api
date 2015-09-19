@@ -1,0 +1,11 @@
+.gradle
+/local.properties
+*.iml
+/.idea/*
+.DS_Store
+/build
+/captures
+/app/build
+/app-tests/build
+/compass/compass-api/build
+/compass/compass-api-tests/build
