@@ -49,6 +49,16 @@ public class LocationSupplierImpl implements LocationSupplier {
     }
 
     @Override
+    public synchronized void start(OnLocationChangedListener onLocationChangedListener) {
+        this.onLocationChangedListener = returnSameOrNullListener(onLocationChangedListener);
+    }
+
+    @Override
+    public synchronized void stop() {
+        onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         onLocationChangedListener.onLocationChanged(location);
     }
@@ -98,19 +108,13 @@ public class LocationSupplierImpl implements LocationSupplier {
         return location;
     }
 
-    @Override
-    public synchronized void start(OnLocationChangedListener onLocationChangedListener) {
-        this.onLocationChangedListener = onLocationChangedListener;
-    }
-
-    @Override
-    public synchronized void stop() {
-        onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
-    }
-
     private List<String> getAllProviders() {
         final List<String> allProviders = locationManager.getAllProviders();
 
         return allProviders == null ? Collections.<String>emptyList() : allProviders;
+    }
+
+    private static OnLocationChangedListener returnSameOrNullListener(final OnLocationChangedListener locationChangedListener) {
+        return locationChangedListener == null ? OnLocationChangedListener.NULL_LISTENER : locationChangedListener;
     }
 }

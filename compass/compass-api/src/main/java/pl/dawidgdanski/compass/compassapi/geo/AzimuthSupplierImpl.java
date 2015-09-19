@@ -3,8 +3,6 @@ package pl.dawidgdanski.compass.compassapi.geo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
@@ -35,7 +33,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     @Override
     public synchronized void start(OnAzimuthChangedListener onAzimuthChangedListener) {
-        this.onAzimuthChangedListener = onAzimuthChangedListener;
+        this.onAzimuthChangedListener = returnSameOrNullListener(onAzimuthChangedListener);
         sensorManager.registerListener(this, gravitySensor,
                 SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magenticFieldSensor,
@@ -91,5 +89,9 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private static OnAzimuthChangedListener returnSameOrNullListener(final OnAzimuthChangedListener listener) {
+        return listener == null ? OnAzimuthChangedListener.NULL_LISTENER : listener;
     }
 }
