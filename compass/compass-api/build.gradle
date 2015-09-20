@@ -40,8 +40,8 @@ dependencies {
 android.libraryVariants.all { variant ->
 
     task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        destinationDir = project.file("$project.projectDir/javadoc/$project.version")
-        title = "Compass API - ($version)"
+        destinationDir = project.file("$project.projectDir/javadoc/$project.COMPASS_API_VERSION_NAME")
+        title = "Compass API - $project.COMPASS_API_VERSION_NAME"
         description "Generates Javadoc for $variant.name."
         source = variant.javaCompile.source
         ext.androidJar ="${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
