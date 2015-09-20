@@ -25,7 +25,18 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            debuggable true
             proguardFiles 'proguard-rules.pro'
+            //signingConfig signingConfig.releaseSigning
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'compass_app'
+            keyPassword 'compass_app'
+            storeFile file('compass_app.keystore')
+            storePassword 'compass_app'
         }
     }
 

@@ -101,6 +101,11 @@ public class CompassImpl implements Compass {
     @Override
     public void onLocationChanged(Location location) {
         this.myLocation = location;
+
+        notifyBearingChanged();
+    }
+
+    private void notifyBearingChanged() {
         final Location myLocation = this.myLocation;
         final Location destination = this.destination;
 

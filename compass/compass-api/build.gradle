@@ -10,6 +10,7 @@ android {
         versionCode Integer.parseInt(project.COMPASS_API_VERSION_CODE)
         versionName project.COMPASS_API_VERSION_NAME
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -19,4 +20,38 @@ android {
 }
 
 dependencies {
+}
+
+android.libraryVariants.all { variant ->
+
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        destinationDir = project.file("$rootProject.projectDir/javadoc/$rootProject.version")
+        title = "Compass API - ($version)"
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        ext.androidJar ="${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar) + project.files(android.getBootClasspath().join(File.pathSeparator))
+        options {
+            memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PUBLIC
+            links "http://docs.oracle.com/javase/8/docs/api/"
+            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+        }
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+    }
+
+    task("bundle${variant.name.capitalize()}Javadoc", type: Jar) {
+        baseName = "Compass API - ($version)"
+        description "Bundles Javadoc into zip for $variant.name."
+        classifier = "javadoc"
+        from tasks["generate${variant.name.capitalize()}Javadoc"]
+    }
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    tasks.withType(Javadoc) {
+        // disable the crazy super-strict doclint tool in Java 8
+        //noinspection SpellCheckingInspection
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
 }
