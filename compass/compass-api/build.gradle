@@ -13,14 +13,24 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
         targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+            manifest.srcFile('src/main/AndroidManifest.xml')
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['src/main/res']
+        }
     }
 }
 
@@ -30,7 +40,7 @@ dependencies {
 android.libraryVariants.all { variant ->
 
     task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        destinationDir = project.file("$rootProject.projectDir/javadoc/$rootProject.version")
+        destinationDir = project.file("$project.projectDir/javadoc/$project.version")
         title = "Compass API - ($version)"
         description "Generates Javadoc for $variant.name."
         source = variant.javaCompile.source
