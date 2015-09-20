@@ -1,4 +1,4 @@
-package pl.dawidgdanski.compass.compassapi.geo;
+package pl.dawidgdanski.compass.compassapi.geomagnetic;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,17 +10,25 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     private static final float ALPHA = 0.97f;
 
+    private static final int ANGLE_360 = 360;
+
     private final SensorManager sensorManager;
     private final Sensor gravitySensor;
     private final Sensor magenticFieldSensor;
 
     private final float[] gravity = new float[3];
     private final float[] geoMagnetic = new float[3];
+    private final float[] orientation = new float[3];
+
+    private final float[] R = new float[9];
+    private final float[] I = new float[9];
 
     private float azimuth = 0f;
-    private float currentAzimuth = 0;
+    private float currentAzimuth = 0f;
 
-    private OnAzimuthChangedListener onAzimuthChangedListener = OnAzimuthChangedListener.NULL_LISTENER;
+    private float bearing = 0f;
+
+    private OnMagneticAzimuthChangedListener onMagneticAzimuthChangedListener = OnMagneticAzimuthChangedListener.NULL_LISTENER;
 
     public AzimuthSupplierImpl(final SensorManager sensorManager) {
         CompassPreconditions.checkNotNull(sensorManager, "SensorManager cannot be null");
@@ -32,8 +40,8 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     }
 
     @Override
-    public synchronized void start(OnAzimuthChangedListener onAzimuthChangedListener) {
-        this.onAzimuthChangedListener = returnSameOrNullListener(onAzimuthChangedListener);
+    public synchronized void start(OnMagneticAzimuthChangedListener onMagneticAzimuthChangedListener) {
+        this.onMagneticAzimuthChangedListener = returnSameOrNullListener(onMagneticAzimuthChangedListener);
         sensorManager.registerListener(this, gravitySensor,
                 SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magenticFieldSensor,
@@ -42,13 +50,17 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     @Override
     public synchronized void stop() {
-        this.onAzimuthChangedListener = OnAzimuthChangedListener.NULL_LISTENER;
+        this.onMagneticAzimuthChangedListener = OnMagneticAzimuthChangedListener.NULL_LISTENER;
         sensorManager.unregisterListener(this);
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public synchronized void setBearing(float bearing) {
+        this.bearing = bearing;
+    }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
 
         synchronized (this) {
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -71,16 +83,14 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
                         * event.values[2];
             }
 
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, gravity, geoMagnetic);
+            final boolean success = SensorManager.getRotationMatrix(R, I, gravity, geoMagnetic);
 
             if (success) {
-                float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 azimuth = (float) Math.toDegrees(orientation[0]);
-                azimuth = (azimuth + 360) % 360;
-                onAzimuthChangedListener.onAzimuthChanged(currentAzimuth, azimuth);
+                azimuth = (azimuth + ANGLE_360) % ANGLE_360;
+                azimuth -= bearing;
+                onMagneticAzimuthChangedListener.onAzimuthChanged(currentAzimuth, azimuth);
             }
             currentAzimuth = azimuth;
         }
@@ -91,7 +101,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     }
 
-    private static OnAzimuthChangedListener returnSameOrNullListener(final OnAzimuthChangedListener listener) {
-        return listener == null ? OnAzimuthChangedListener.NULL_LISTENER : listener;
+    private static OnMagneticAzimuthChangedListener returnSameOrNullListener(final OnMagneticAzimuthChangedListener listener) {
+        return listener == null ? OnMagneticAzimuthChangedListener.NULL_LISTENER : listener;
     }
 }

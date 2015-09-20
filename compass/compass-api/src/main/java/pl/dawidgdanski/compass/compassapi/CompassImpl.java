@@ -1,16 +1,13 @@
 package pl.dawidgdanski.compass.compassapi;
 
-import android.hardware.SensorManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
-import pl.dawidgdanski.compass.compassapi.geo.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.geo.AzimuthSupplierImpl;
+import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
+import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplierImpl;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
 public class CompassImpl implements Compass {
@@ -21,22 +18,45 @@ public class CompassImpl implements Compass {
 
     private View view;
 
-    public CompassImpl(final SensorManager sensorManager, final LocationManager locationManager) {
-        CompassPreconditions.checkNotNull(sensorManager, "SensorManager cannot be null");
-        CompassPreconditions.checkNotNull(locationManager, "LocationManager cannot be null");
+    private Location destination;
 
-        this.azimuthSupplier = new AzimuthSupplierImpl(sensorManager);
-        this.locationSupplier = new LocationSupplierImpl(locationManager);
+    private Location myLocation;
+
+    public CompassImpl(AzimuthSupplier azimuthSupplier, LocationSupplier locationSupplier) {
+        CompassPreconditions.checkNotNull(azimuthSupplier, "Azimuth Supplier cannot be null");
+        CompassPreconditions.checkNotNull(locationSupplier, "Location supplier cannot be null");
+
+        this.azimuthSupplier = azimuthSupplier;
+        this.locationSupplier = locationSupplier;
+
+        try {
+            this.myLocation = locationSupplier.getLastKnownLocation();
+        } catch (LocationAbsentException ignored) {
+        }
     }
 
+    @Override
     public synchronized void start() {
         azimuthSupplier.start(this);
         locationSupplier.start(this);
     }
 
+    @Override
     public synchronized void stop() {
         azimuthSupplier.stop();
         locationSupplier.stop();
+
+        final View view = this.view;
+
+        if (view != null) {
+            view.clearAnimation();
+        }
+    }
+
+    @Override
+    public synchronized void destroy() {
+        stop();
+        view = null;
     }
 
     public synchronized void setView(final View view) {
@@ -45,6 +65,15 @@ public class CompassImpl implements Compass {
 
     public synchronized View getView() {
         return view;
+    }
+
+    public synchronized void setDestination(final Location destination) {
+        CompassPreconditions.checkNotNull(destination, "Location cannot be null");
+        this.destination = new Location(destination);
+    }
+
+    public synchronized Location getDestination() {
+        return destination != null ? new Location(destination) : null;
     }
 
     @Override
@@ -56,7 +85,9 @@ public class CompassImpl implements Compass {
             return;
         }
 
-        Animation an = new RotateAnimation(-previousAzimuth, -currentAzimuth,
+        Animation an = new RotateAnimation(
+                -previousAzimuth,
+                -currentAzimuth,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
 
@@ -69,6 +100,12 @@ public class CompassImpl implements Compass {
 
     @Override
     public void onLocationChanged(Location location) {
+        this.myLocation = location;
+        final Location myLocation = this.myLocation;
+        final Location destination = this.destination;
 
+        if(myLocation != null && destination != null) {
+            azimuthSupplier.setBearing(myLocation.bearingTo(destination));
+        }
     }
 }

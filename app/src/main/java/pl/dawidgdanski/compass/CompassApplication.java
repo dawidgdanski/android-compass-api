@@ -6,9 +6,15 @@ import android.content.Context;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.ModuleProvisionContract;
 import pl.dawidgdanski.compass.inject.module.CompassApplicationModule;
+import pl.dawidgdanski.compass.inject.module.CompassModule;
+import pl.dawidgdanski.compass.inject.module.DatabaseModule;
+import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
+import pl.dawidgdanski.compass.inject.module.LocationModule;
+
 import com.squareup.leakcanary.LeakCanary;
 
 public class CompassApplication extends Application implements ModuleProvisionContract {
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -22,14 +28,34 @@ public class CompassApplication extends Application implements ModuleProvisionCo
         installLeakCanary();
     }
 
+    protected void installLeakCanary() {
+        if(BuildConfig.DEBUG) {
+            LeakCanary.install(this);
+        }
+    }
+
     @Override
     public CompassApplicationModule getCompassApplicationModule(CompassApplication compassApplication) {
         return new CompassApplicationModule(compassApplication);
     }
 
-    protected void installLeakCanary() {
-        if(BuildConfig.DEBUG) {
-            LeakCanary.install(this);
-        }
+    @Override
+    public CompassModule getCompassModule(CompassApplication compassApplication) {
+        return new CompassModule();
+    }
+
+    @Override
+    public DatabaseModule getDatabaseModule(CompassApplication compassApplication) {
+        return new DatabaseModule();
+    }
+
+    @Override
+    public GeomagneticModule getGeomagneticModule(CompassApplication compassApplication) {
+        return new GeomagneticModule();
+    }
+
+    @Override
+    public LocationModule getLocationModule(CompassApplication compassApplication) {
+        return new LocationModule();
     }
 }

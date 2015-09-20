@@ -1,17 +1,19 @@
-package pl.dawidgdanski.compass.compassapi.geo;
+package pl.dawidgdanski.compass.compassapi.geomagnetic;
 
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
 public interface AzimuthSupplier extends SensorEventListener {
 
-    void start(OnAzimuthChangedListener onAzimuthChangedListener);
+    void start(OnMagneticAzimuthChangedListener onMagneticAzimuthChangedListener);
 
     void stop();
 
-    interface OnAzimuthChangedListener {
+    void setBearing(float bearing);
 
-        OnAzimuthChangedListener NULL_LISTENER = new OnAzimuthChangedListener() {
+    interface OnMagneticAzimuthChangedListener {
+
+        OnMagneticAzimuthChangedListener NULL_LISTENER = new OnMagneticAzimuthChangedListener() {
             @Override
             public void onAzimuthChanged(float previousAzimuth, float currentAzimuth) {
                 Log.d("NullOnAzimuthchanged", String.format("previous: %.2f, current: %.2f",

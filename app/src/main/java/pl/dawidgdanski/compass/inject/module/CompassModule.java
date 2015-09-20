@@ -1,18 +1,18 @@
 package pl.dawidgdanski.compass.inject.module;
 
-import android.hardware.SensorManager;
-import android.location.LocationManager;
-
 import dagger.Module;
 import dagger.Provides;
+import pl.dawidgdanski.compass.compassapi.Compass;
 import pl.dawidgdanski.compass.compassapi.CompassImpl;
+import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
+import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 
 @Module
 public class CompassModule {
 
     @Provides
-    public CompassImpl provideCompass(SensorManager sensorManager, LocationManager locationManager) {
-        return new CompassImpl(sensorManager, locationManager);
+    public Compass provideCompass(AzimuthSupplier azimuthSupplier, LocationSupplier locationSupplier) {
+        return new CompassImpl(azimuthSupplier, locationSupplier);
     }
 
 }

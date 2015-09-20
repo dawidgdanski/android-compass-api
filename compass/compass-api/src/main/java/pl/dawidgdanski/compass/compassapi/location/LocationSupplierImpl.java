@@ -4,6 +4,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,10 @@ import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 public class LocationSupplierImpl implements LocationSupplier {
 
     private static final Criteria DEFAULT_CRITERIA;
+
+    private static final long LOCATION_UPDATES_MINIMAL_INTERVAL = DateUtils.SECOND_IN_MILLIS * 5;
+
+    private static final float LOCATION_UPDATES_MINIMAL_DISTANCE = 5f;
 
     static {
         DEFAULT_CRITERIA = new Criteria();
@@ -31,6 +36,10 @@ public class LocationSupplierImpl implements LocationSupplier {
         DEFAULT_CRITERIA.setVerticalAccuracy(Criteria.ACCURACY_LOW);
     }
 
+    public static Criteria getDefaultCriteria() {
+        return new Criteria(DEFAULT_CRITERIA);
+    }
+
     private final LocationManager locationManager;
 
     private final Criteria criteria;
@@ -38,7 +47,7 @@ public class LocationSupplierImpl implements LocationSupplier {
     private OnLocationChangedListener onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
 
     public LocationSupplierImpl(final LocationManager locationManager) {
-        this(locationManager, new Criteria(DEFAULT_CRITERIA));
+        this(locationManager, getDefaultCriteria());
     }
 
     public LocationSupplierImpl(final LocationManager locationManager, final Criteria criteria) {
@@ -51,11 +60,18 @@ public class LocationSupplierImpl implements LocationSupplier {
     @Override
     public synchronized void start(OnLocationChangedListener onLocationChangedListener) {
         this.onLocationChangedListener = returnSameOrNullListener(onLocationChangedListener);
+        locationManager.requestLocationUpdates(
+                LOCATION_UPDATES_MINIMAL_INTERVAL,
+                LOCATION_UPDATES_MINIMAL_DISTANCE,
+                criteria,
+                this,
+                null);
     }
 
     @Override
     public synchronized void stop() {
         onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
+        locationManager.removeUpdates(this);
     }
 
     @Override
