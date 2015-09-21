@@ -21,7 +21,7 @@ public class LocationModule {
     }
 
     @Provides
-    public LocationSupplier provideLocationSupplier(LocationManager locationManager, Criteria criteria) {
+    public NativeLocationSupplier provideLocationSupplier(LocationManager locationManager, Criteria criteria) {
         return new NativeLocationSupplier(locationManager, criteria);
     }
 

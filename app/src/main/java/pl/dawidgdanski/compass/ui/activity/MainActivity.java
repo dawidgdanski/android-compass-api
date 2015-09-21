@@ -23,7 +23,7 @@ import pl.dawidgdanski.compass.inject.Qualifiers;
 public class MainActivity extends AppCompatActivity implements LocationSupplier.OnLocationChangedListener {
 
     @Inject
-    @Named(Qualifiers.PLAY_SERVICES_COMPASS)
+    @Named(Qualifiers.MULTI_COMPASS)
     ActivityBoundCompass compass;
 
     @Bind(R.id.arrow)
