@@ -10,7 +10,7 @@ buildscript {
 ext {
     targetSdkVersion = 23
 
-    compassApiMinSdkVersion = 9
+    compassApiMinSdkVersion = 14
 
     appMinSdkVersion = 15
 

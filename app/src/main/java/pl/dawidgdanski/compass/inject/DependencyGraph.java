@@ -9,6 +9,7 @@ import pl.dawidgdanski.compass.inject.module.DatabaseModule;
 import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.LocationModule;
 import pl.dawidgdanski.compass.provider.AppContentProvider;
+import pl.dawidgdanski.compass.ui.activity.MainActivity;
 
 @Singleton
 @Component(modules = {
@@ -20,4 +21,6 @@ import pl.dawidgdanski.compass.provider.AppContentProvider;
 public interface DependencyGraph {
 
         void inject(AppContentProvider contentProvider);
+
+        void inject(MainActivity mainActivity);
 }

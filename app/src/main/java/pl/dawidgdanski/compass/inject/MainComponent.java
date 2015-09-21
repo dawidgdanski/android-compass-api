@@ -11,6 +11,10 @@ interface MainComponent extends DependencyGraph {
         static DependencyGraph initialize(CompassApplication app, ModuleProvisionContract moduleProvisionContract) {
             return DaggerDependencyGraph.builder()
                     .compassApplicationModule(moduleProvisionContract.getCompassApplicationModule(app))
+                    .compassModule(moduleProvisionContract.getCompassModule(app))
+                    .databaseModule(moduleProvisionContract.getDatabaseModule(app))
+                    .geomagneticModule(moduleProvisionContract.getGeomagneticModule(app))
+                    .locationModule(moduleProvisionContract.getLocationModule(app))
                     .build();
         }
     }

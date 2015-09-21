@@ -3,6 +3,7 @@ package pl.dawidgdanski.compass;
 import android.app.Application;
 import android.content.Context;
 
+import pl.dawidgdanski.compass.compassapi.CompassApi;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.ModuleProvisionContract;
 import pl.dawidgdanski.compass.inject.module.CompassApplicationModule;
@@ -19,6 +20,7 @@ public class CompassApplication extends Application implements ModuleProvisionCo
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        CompassApi.initialize(this);
         DependencyInjector.initialize(this);
     }
 

@@ -4,6 +4,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
+import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
 public class AzimuthSupplierImpl implements AzimuthSupplier {
@@ -28,7 +29,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     private float bearing = 0f;
 
-    private OnMagneticAzimuthChangedListener onMagneticAzimuthChangedListener = OnMagneticAzimuthChangedListener.NULL_LISTENER;
+    private OnAzimuthChangedListener onAzimuthChangedListener = OnAzimuthChangedListener.NULL_LISTENER;
 
     public AzimuthSupplierImpl(final SensorManager sensorManager) {
         CompassPreconditions.checkNotNull(sensorManager, "SensorManager cannot be null");
@@ -40,8 +41,8 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     }
 
     @Override
-    public synchronized void start(OnMagneticAzimuthChangedListener onMagneticAzimuthChangedListener) {
-        this.onMagneticAzimuthChangedListener = returnSameOrNullListener(onMagneticAzimuthChangedListener);
+    public synchronized void start(OnAzimuthChangedListener onAzimuthChangedListener) {
+        this.onAzimuthChangedListener = CompassListeners.returnSameOrNullListener(onAzimuthChangedListener);
         sensorManager.registerListener(this, gravitySensor,
                 SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magenticFieldSensor,
@@ -50,7 +51,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     @Override
     public synchronized void stop() {
-        this.onMagneticAzimuthChangedListener = OnMagneticAzimuthChangedListener.NULL_LISTENER;
+        this.onAzimuthChangedListener = OnAzimuthChangedListener.NULL_LISTENER;
         sensorManager.unregisterListener(this);
     }
 
@@ -90,7 +91,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
                 azimuth = (float) Math.toDegrees(orientation[0]);
                 azimuth = (azimuth + ANGLE_360) % ANGLE_360;
                 azimuth -= bearing;
-                onMagneticAzimuthChangedListener.onAzimuthChanged(currentAzimuth, azimuth);
+                onAzimuthChangedListener.onAzimuthChanged(currentAzimuth, azimuth);
             }
             currentAzimuth = azimuth;
         }
@@ -99,9 +100,5 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    private static OnMagneticAzimuthChangedListener returnSameOrNullListener(final OnMagneticAzimuthChangedListener listener) {
-        return listener == null ? OnMagneticAzimuthChangedListener.NULL_LISTENER : listener;
     }
 }

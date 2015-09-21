@@ -2,6 +2,7 @@ package pl.dawidgdanski.compass.compassapi.location;
 
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -10,15 +11,16 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
+import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class LocationSupplierImpl implements LocationSupplier {
+public class NativeLocationSupplier implements LocationSupplier, LocationListener {
 
     private static final Criteria DEFAULT_CRITERIA;
 
     private static final long LOCATION_UPDATES_MINIMAL_INTERVAL = DateUtils.SECOND_IN_MILLIS * 5;
 
-    private static final float LOCATION_UPDATES_MINIMAL_DISTANCE = 5f;
+    private static final float LOCATION_UPDATES_MINIMAL_DISTANCE = 1f;
 
     static {
         DEFAULT_CRITERIA = new Criteria();
@@ -46,11 +48,11 @@ public class LocationSupplierImpl implements LocationSupplier {
 
     private OnLocationChangedListener onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
 
-    public LocationSupplierImpl(final LocationManager locationManager) {
+    public NativeLocationSupplier(final LocationManager locationManager) {
         this(locationManager, getDefaultCriteria());
     }
 
-    public LocationSupplierImpl(final LocationManager locationManager, final Criteria criteria) {
+    public NativeLocationSupplier(final LocationManager locationManager, final Criteria criteria) {
         CompassPreconditions.checkNotNull(locationManager, "Context cannot be null");
         CompassPreconditions.checkNotNull(criteria, "Location criteria cannot be null");
         this.locationManager = locationManager;
@@ -59,7 +61,7 @@ public class LocationSupplierImpl implements LocationSupplier {
 
     @Override
     public synchronized void start(OnLocationChangedListener onLocationChangedListener) {
-        this.onLocationChangedListener = returnSameOrNullListener(onLocationChangedListener);
+        this.onLocationChangedListener = CompassListeners.returnSameOrNullListener(onLocationChangedListener);
         locationManager.requestLocationUpdates(
                 LOCATION_UPDATES_MINIMAL_INTERVAL,
                 LOCATION_UPDATES_MINIMAL_DISTANCE,
@@ -128,9 +130,5 @@ public class LocationSupplierImpl implements LocationSupplier {
         final List<String> allProviders = locationManager.getAllProviders();
 
         return allProviders == null ? Collections.<String>emptyList() : allProviders;
-    }
-
-    private static OnLocationChangedListener returnSameOrNullListener(final OnLocationChangedListener locationChangedListener) {
-        return locationChangedListener == null ? OnLocationChangedListener.NULL_LISTENER : locationChangedListener;
     }
 }

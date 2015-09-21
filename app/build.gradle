@@ -20,6 +20,19 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(project.APP_VERSION_CODE)
         versionName project.APP_VERSION_NAME
+        testApplicationId "com.kontakt.app.test"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        main { java.srcDirs = ['src/main/java']
+            manifest.srcFile('src/main/AndroidManifest.xml')
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
     }
 
     buildTypes {

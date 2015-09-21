@@ -11,20 +11,21 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
 
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
-public class CompassTest {
+public class CompassTest extends RobolectricUnitTestCase {
 
     @Mock
     AzimuthSupplier azimuthSupplier;
 
     @Mock
-    LocationSupplier locationSupplier;
+    NativeLocationSupplier locationSupplier;
 
     @Before
     public void setUp() {
@@ -33,17 +34,35 @@ public class CompassTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldRaise_NPE_DuringConstruction_When_NullAzimuthSupplierPassed() {
-        new CompassImpl(null, locationSupplier);
+        try {
+            CompassApi.initialize(getApplication());
+        } catch (NullPointerException ignored) {
+            //https://github.com/robolectric/robolectric/issues/2028
+        }
+
+        new NativeCompass(null, locationSupplier);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldRaise_NPE_DuringConstruction_When_NullLocationSupplierPassed() {
-        new CompassImpl(azimuthSupplier, null);
+        try {
+            CompassApi.initialize(getApplication());
+        } catch (NullPointerException ignored) {
+            //https://github.com/robolectric/robolectric/issues/2028
+        }
+
+        new NativeCompass(azimuthSupplier, null);
     }
 
     @Test
     public void shouldStartMembersOnStartMethodCall() {
-        final Compass SUT = new CompassImpl(azimuthSupplier, locationSupplier);
+        try {
+            CompassApi.initialize(getApplication());
+        } catch (NullPointerException ignored) {
+            //https://github.com/robolectric/robolectric/issues/2028
+        }
+
+        final Compass SUT = new NativeCompass(azimuthSupplier, locationSupplier);
 
         SUT.start();
 
@@ -51,8 +70,15 @@ public class CompassTest {
         verify(locationSupplier).start(same(SUT));
     }
 
+    @Test
     public void shouldStopMembersOnStopMethodCall() {
-        final Compass SUT = new CompassImpl(azimuthSupplier, locationSupplier);
+        try {
+            CompassApi.initialize(getApplication());
+        } catch (NullPointerException ignored) {
+            //https://github.com/robolectric/robolectric/issues/2028
+        }
+
+        final Compass SUT = new NativeCompass(azimuthSupplier, locationSupplier);
 
         SUT.stop();
 

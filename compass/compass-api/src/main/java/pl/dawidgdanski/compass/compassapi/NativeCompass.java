@@ -8,11 +8,13 @@ import android.view.animation.RotateAnimation;
 import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class CompassImpl implements Compass {
+public class NativeCompass implements Compass {
 
-    private final LocationSupplier locationSupplier;
+    private final LocationSupplier nativeLocationSupplier;
 
     private final AzimuthSupplier azimuthSupplier;
 
@@ -22,15 +24,21 @@ public class CompassImpl implements Compass {
 
     private Location myLocation;
 
-    public CompassImpl(AzimuthSupplier azimuthSupplier, LocationSupplier locationSupplier) {
+    private LocationSupplier.OnLocationChangedListener onLocationChangedListener = LocationSupplier.OnLocationChangedListener.NULL_LISTENER;
+
+    public NativeCompass(AzimuthSupplier azimuthSupplier,
+                         LocationSupplier nativeLocationSupplier) {
+
+        CompassPreconditions.checkState(CompassApi.isInitialized(), "Compass API is not initialized, please initialize it in your application.");
+
         CompassPreconditions.checkNotNull(azimuthSupplier, "Azimuth Supplier cannot be null");
-        CompassPreconditions.checkNotNull(locationSupplier, "Location supplier cannot be null");
+        CompassPreconditions.checkNotNull(nativeLocationSupplier, "Location supplier cannot be null");
 
         this.azimuthSupplier = azimuthSupplier;
-        this.locationSupplier = locationSupplier;
+        this.nativeLocationSupplier = nativeLocationSupplier;
 
         try {
-            this.myLocation = locationSupplier.getLastKnownLocation();
+            this.myLocation = nativeLocationSupplier.getLastKnownLocation();
         } catch (LocationAbsentException ignored) {
         }
     }
@@ -38,13 +46,13 @@ public class CompassImpl implements Compass {
     @Override
     public synchronized void start() {
         azimuthSupplier.start(this);
-        locationSupplier.start(this);
+        nativeLocationSupplier.start(this);
     }
 
     @Override
     public synchronized void stop() {
         azimuthSupplier.stop();
-        locationSupplier.stop();
+        nativeLocationSupplier.stop();
 
         final View view = this.view;
 
@@ -59,21 +67,26 @@ public class CompassImpl implements Compass {
         view = null;
     }
 
+    @Override
     public synchronized void setView(final View view) {
         this.view = view;
     }
 
+    @Override
     public synchronized View getView() {
         return view;
     }
 
-    public synchronized void setDestination(final Location destination) {
-        CompassPreconditions.checkNotNull(destination, "Location cannot be null");
-        this.destination = new Location(destination);
+    @Override
+    public synchronized void navigateTo(final double latitude, final double longitude) {
+        destination = new Location((String) null);
+        destination.setLatitude(latitude);
+        destination.setLongitude(longitude);
     }
 
-    public synchronized Location getDestination() {
-        return destination != null ? new Location(destination) : null;
+    @Override
+    public void setOnLocationChangedListener(LocationSupplier.OnLocationChangedListener onLocationChangedListener) {
+        this.onLocationChangedListener = CompassListeners.returnSameOrNullListener(onLocationChangedListener);
     }
 
     @Override
@@ -100,8 +113,8 @@ public class CompassImpl implements Compass {
 
     @Override
     public void onLocationChanged(Location location) {
-        this.myLocation = location;
-
+        myLocation = location;
+        onLocationChangedListener.onLocationChanged(new Location(location));
         notifyBearingChanged();
     }
 
@@ -109,7 +122,7 @@ public class CompassImpl implements Compass {
         final Location myLocation = this.myLocation;
         final Location destination = this.destination;
 
-        if(myLocation != null && destination != null) {
+        if (myLocation != null && destination != null) {
             azimuthSupplier.setBearing(myLocation.bearingTo(destination));
         }
     }
