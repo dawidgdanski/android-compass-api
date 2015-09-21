@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -89,6 +90,6 @@ public class MainActivity extends AppCompatActivity implements LocationSupplier.
 
     @Override
     public void onLocationChanged(Location location) {
-
+        Toast.makeText(this, "Location changed", Toast.LENGTH_SHORT).show();
     }
 }

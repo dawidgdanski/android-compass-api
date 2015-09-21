@@ -23,7 +23,7 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     static final String SAVED_STATE_LAST_KNOWN_LOCATION = "location_supplier:last_known_location";
 
-    private static final long UPDATE_INTERVAL_MILLIS = TimeUnit.SECONDS.toMillis(10);
+    private static final long UPDATE_INTERVAL_MILLIS = TimeUnit.SECONDS.toMillis(8);
 
     private static final long FASTEST_UPDATE_INTERVAL_MILLIS = UPDATE_INTERVAL_MILLIS / 2;
 
@@ -34,8 +34,6 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
     private OnLocationChangedListener onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
 
     private Location lastKnownLocation;
-
-    private boolean requestLocationUpdates;
 
     public PlayServicesLocationSupplier() {
         locationRequest = new LocationRequest()
@@ -68,17 +66,16 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
     @Override
     public void start(OnLocationChangedListener locationUpdateListener) {
         this.onLocationChangedListener = CompassListeners.returnSameOrNullListener(locationUpdateListener);
-
-        if(!isConnected() && !isConnecting()) {
-            googleApiClient.connect();
-        }
-
-        requestLocationUpdates = true;
+        googleApiClient.connect();
     }
 
     @Override
     public void stop() {
         onLocationChangedListener = CompassListeners.returnSameOrNullListener((OnLocationChangedListener) null);
+        if(isConnected()) {
+            stopRequestingUpdates();
+        }
+        googleApiClient.disconnect();
     }
 
     @Override
@@ -92,9 +89,7 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
             lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         }
 
-        if(requestLocationUpdates) {
-            requestUpdates();
-        }
+        requestUpdates();
     }
 
     @Override
@@ -125,34 +120,28 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     @Override
     public synchronized void onActivityStarted(Activity activity) {
-        if(! isConnected()) {
-            googleApiClient.connect();
-        }
+        googleApiClient.connect();
     }
 
     @Override
     public synchronized void onActivityResumed(Activity activity) {
-        if(isConnected()) {
-            requestUpdates();
-        }
     }
 
     @Override
     public synchronized void onActivityPaused(Activity activity) {
-        if(isConnected()) {
-            stopRequestingUpdates();
-        }
     }
 
     @Override
     public synchronized void onActivityStopped(Activity activity) {
-        if(isConnected()) {
-            googleApiClient.disconnect();
-        }
+        stop();
     }
 
     @Override
     public synchronized void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        if(! isInitialized()) {
+            return;
+        }
+
         outState.putParcelable(SAVED_STATE_LAST_KNOWN_LOCATION, lastKnownLocation);
     }
 
@@ -162,16 +151,12 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
         googleApiClient = null;
     }
 
-    private boolean isInitialized() {
+    protected boolean isInitialized() {
         return googleApiClient != null;
     }
 
-    private boolean isConnected() {
+    protected boolean isConnected() {
         return isInitialized() && googleApiClient.isConnected();
-    }
-
-    private boolean isConnecting() {
-        return isInitialized() && googleApiClient.isConnecting();
     }
 
     private void requestUpdates() {

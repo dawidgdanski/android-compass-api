@@ -24,6 +24,7 @@ public class PlayServicesCompass extends AbstractActivityBoundCompass {
 
     @Override
     public void onActivityStarted(Activity activity) {
+        super.onActivityStarted(activity);
         locationSupplier.onActivityStarted(activity);
     }
 
@@ -50,6 +51,7 @@ public class PlayServicesCompass extends AbstractActivityBoundCompass {
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        super.onActivityDestroyed(activity);
         locationSupplier.onActivityDestroyed(activity);
     }
 }
