@@ -35,6 +35,8 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     private Location lastKnownLocation;
 
+    private boolean requestLocationUpdates;
+
     public PlayServicesLocationSupplier() {
         locationRequest = new LocationRequest()
                 .setInterval(UPDATE_INTERVAL_MILLIS)
@@ -66,6 +68,12 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
     @Override
     public void start(OnLocationChangedListener locationUpdateListener) {
         this.onLocationChangedListener = CompassListeners.returnSameOrNullListener(locationUpdateListener);
+
+        if(!isConnected() && !isConnecting()) {
+            googleApiClient.connect();
+        }
+
+        requestLocationUpdates = true;
     }
 
     @Override
@@ -80,7 +88,13 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     @Override
     public void onConnected(Bundle bundle) {
+        if(lastKnownLocation == null) {
+            lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        }
 
+        if(requestLocationUpdates) {
+            requestUpdates();
+        }
     }
 
     @Override
@@ -119,14 +133,14 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
     @Override
     public synchronized void onActivityResumed(Activity activity) {
         if(isConnected()) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            requestUpdates();
         }
     }
 
     @Override
     public synchronized void onActivityPaused(Activity activity) {
         if(isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            stopRequestingUpdates();
         }
     }
 
@@ -154,5 +168,17 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     private boolean isConnected() {
         return isInitialized() && googleApiClient.isConnected();
+    }
+
+    private boolean isConnecting() {
+        return isInitialized() && googleApiClient.isConnecting();
+    }
+
+    private void requestUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+    }
+
+    private void stopRequestingUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
     }
 }

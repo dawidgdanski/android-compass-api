@@ -7,7 +7,7 @@ import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.ActivityBoundLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 
-public class PlayServicesCompass extends NativeCompass implements ActivityBoundCompass {
+public class PlayServicesCompass extends AbstractActivityBoundCompass {
 
     private final ActivityBoundLocationSupplier locationSupplier;
 
@@ -39,6 +39,7 @@ public class PlayServicesCompass extends NativeCompass implements ActivityBoundC
 
     @Override
     public void onActivityStopped(Activity activity) {
+        super.onActivityStopped(activity);
         locationSupplier.onActivityStopped(activity);
     }
 

@@ -8,8 +8,7 @@ import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class MultiCompass extends NativeCompass
-        implements ActivityBoundCompass {
+public class MultiCompass extends AbstractActivityBoundCompass {
 
     private final PlayServicesLocationSupplier playServicesLocationSupplier;
 
@@ -42,6 +41,7 @@ public class MultiCompass extends NativeCompass
     @Override
     public void onActivityStarted(Activity activity) {
         playServicesLocationSupplier.onActivityStarted(activity);
+        super.onActivityStarted(activity);
     }
 
     @Override
@@ -57,6 +57,7 @@ public class MultiCompass extends NativeCompass
     @Override
     public void onActivityStopped(Activity activity) {
         playServicesLocationSupplier.onActivityStopped(activity);
+        super.onActivityStopped(activity);
     }
 
     @Override
@@ -67,6 +68,7 @@ public class MultiCompass extends NativeCompass
     @Override
     public void onActivityDestroyed(Activity activity) {
         playServicesLocationSupplier.onActivityDestroyed(activity);
+        super.onActivityDestroyed(activity);
     }
 }
 

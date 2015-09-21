@@ -35,23 +35,29 @@ android {
         }
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled true
-            debuggable true
-            proguardFiles 'proguard-rules.pro'
-            //signingConfig signingConfig.releaseSigning
+            storeFile file(RELEASE_ANDROID_KEYSTORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
         }
     }
 
-    signingConfigs {
+    buildTypes {
         release {
-            keyAlias 'compass_app'
-            keyPassword 'compass_app'
-            storeFile file('compass_app.keystore')
-            storePassword 'compass_app'
+            minifyEnabled true
+            debuggable false
+            proguardFiles 'android-proguard-rules.pro', 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+
+    packagingOptions {
+        exclude 'main/AndroidManifest.xml'
+        exclude 'main/res/values/strings.xml'
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

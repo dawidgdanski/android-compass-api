@@ -16,7 +16,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class CompassApplication extends Application implements ModuleProvisionContract {
 
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
