@@ -7,13 +7,13 @@ import android.view.animation.RotateAnimation;
 
 import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
 public class NativeCompass implements Compass {
 
-    private final baseLocationSupplier nativeBaseLocationSupplier;
+    private final LocationSupplier nativeLocationSupplier;
 
     private final AzimuthSupplier azimuthSupplier;
 
@@ -23,21 +23,21 @@ public class NativeCompass implements Compass {
 
     private Location myLocation;
 
-    private baseLocationSupplier.OnLocationChangedListener onLocationChangedListener = baseLocationSupplier.OnLocationChangedListener.NULL_LISTENER;
+    private LocationSupplier.OnLocationChangedListener onLocationChangedListener = LocationSupplier.OnLocationChangedListener.NULL_LISTENER;
 
     public NativeCompass(AzimuthSupplier azimuthSupplier,
-                         baseLocationSupplier nativeBaseLocationSupplier) {
+                         LocationSupplier nativeLocationSupplier) {
 
         CompassPreconditions.checkState(CompassApi.isInitialized(), "Compass API is not initialized, please initialize it in your application.");
 
         CompassPreconditions.checkNotNull(azimuthSupplier, "Azimuth Supplier cannot be null");
-        CompassPreconditions.checkNotNull(nativeBaseLocationSupplier, "Location supplier cannot be null");
+        CompassPreconditions.checkNotNull(nativeLocationSupplier, "Location supplier cannot be null");
 
         this.azimuthSupplier = azimuthSupplier;
-        this.nativeBaseLocationSupplier = nativeBaseLocationSupplier;
+        this.nativeLocationSupplier = nativeLocationSupplier;
 
         try {
-            this.myLocation = nativeBaseLocationSupplier.getLastKnownLocation();
+            this.myLocation = nativeLocationSupplier.getLastKnownLocation();
         } catch (LocationAbsentException ignored) {
         }
     }
@@ -45,13 +45,13 @@ public class NativeCompass implements Compass {
     @Override
     public synchronized void start() {
         azimuthSupplier.start(this);
-        nativeBaseLocationSupplier.start(this);
+        nativeLocationSupplier.start(this);
     }
 
     @Override
     public synchronized void stop() {
         azimuthSupplier.stop();
-        nativeBaseLocationSupplier.stop();
+        nativeLocationSupplier.stop();
 
         final View view = this.view;
 
@@ -84,7 +84,7 @@ public class NativeCompass implements Compass {
     }
 
     @Override
-    public void setOnLocationChangedListener(baseLocationSupplier.OnLocationChangedListener onLocationChangedListener) {
+    public void setOnLocationChangedListener(LocationSupplier.OnLocationChangedListener onLocationChangedListener) {
         this.onLocationChangedListener = CompassListeners.returnSameOrNullListener(onLocationChangedListener);
     }
 

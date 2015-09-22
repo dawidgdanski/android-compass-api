@@ -19,8 +19,8 @@ public class CompassModule {
 
     @Provides
     @Named(Qualifiers.NATIVE_COMPASS)
-    public Compass provideCompass(AzimuthSupplier azimuthSupplier,
-                                  NativeLocationSupplier locationSupplier) {
+    public Compass provideNativeCompass(AzimuthSupplier azimuthSupplier,
+                                        NativeLocationSupplier locationSupplier) {
         return new NativeCompass(azimuthSupplier, locationSupplier);
     }
 

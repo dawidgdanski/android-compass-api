@@ -3,11 +3,9 @@ package pl.dawidgdanski.compass.compassapi;
 import android.app.Activity;
 import android.os.Bundle;
 
-import java.util.Collections;
-
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.ActivityBoundLocationSupplier;
-import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.compassapi.util.CompassOptional;
 
 abstract class AbstractActivityBoundCompass extends NativeCompass implements ActivityBoundCompass {
@@ -19,20 +17,20 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     private final CompassOptional<ActivityBoundLocationSupplier> optionalActivityBoundLocationSupplier;
 
     AbstractActivityBoundCompass(AzimuthSupplier azimuthSupplier,
-                                 baseLocationSupplier baseLocationSupplier,
+                                 LocationSupplier LocationSupplier,
                                  ActivityBoundLocationSupplier... activityBoundAdditionalSuppliers) {
-        super(azimuthSupplier, baseLocationSupplier);
+        super(azimuthSupplier, LocationSupplier);
         this.additionalSuppliers = activityBoundAdditionalSuppliers == null ? EMPTY : activityBoundAdditionalSuppliers;
         this.optionalActivityBoundLocationSupplier =
-                (baseLocationSupplier instanceof ActivityBoundLocationSupplier) ?
-                        CompassOptional.of((ActivityBoundLocationSupplier) baseLocationSupplier) :
+                (LocationSupplier instanceof ActivityBoundLocationSupplier) ?
+                        CompassOptional.of((ActivityBoundLocationSupplier) LocationSupplier) :
                         CompassOptional.<ActivityBoundLocationSupplier>absent();
     }
 
     @Override
     public synchronized void start() {
         super.start();
-        for(baseLocationSupplier supplier : additionalSuppliers) {
+        for(LocationSupplier supplier : additionalSuppliers) {
             supplier.start(this);
         }
     }
@@ -40,7 +38,7 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     @Override
     public synchronized void stop() {
         super.stop();
-        for(baseLocationSupplier supplier: additionalSuppliers) {
+        for(LocationSupplier supplier: additionalSuppliers) {
             supplier.stop();
         }
     }

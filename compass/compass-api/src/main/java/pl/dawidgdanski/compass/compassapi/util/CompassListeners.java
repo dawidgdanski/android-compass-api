@@ -1,7 +1,7 @@
 package pl.dawidgdanski.compass.compassapi.util;
 
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 
 public final class CompassListeners {
 
@@ -11,7 +11,7 @@ public final class CompassListeners {
         return listener == null ? AzimuthSupplier.OnAzimuthChangedListener.NULL_LISTENER : listener;
     }
 
-    public static baseLocationSupplier.OnLocationChangedListener returnSameOrNullListener(final baseLocationSupplier.OnLocationChangedListener locationChangedListener) {
-        return locationChangedListener == null ? baseLocationSupplier.OnLocationChangedListener.NULL_LISTENER : locationChangedListener;
+    public static LocationSupplier.OnLocationChangedListener returnSameOrNullListener(final LocationSupplier.OnLocationChangedListener locationChangedListener) {
+        return locationChangedListener == null ? LocationSupplier.OnLocationChangedListener.NULL_LISTENER : locationChangedListener;
     }
 }

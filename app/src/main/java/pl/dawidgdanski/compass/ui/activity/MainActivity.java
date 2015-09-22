@@ -15,11 +15,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
-import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 
-public class MainActivity extends AppCompatActivity implements baseLocationSupplier.OnLocationChangedListener {
+public class MainActivity extends AppCompatActivity implements LocationSupplier.OnLocationChangedListener {
 
     @Inject
     @Named(Qualifiers.PLAY_SERVICES_COMPASS)
