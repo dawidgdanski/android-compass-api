@@ -2,10 +2,10 @@ package pl.dawidgdanski.compass.compassapi;
 import android.view.View;
 
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
 
 public interface Compass extends AzimuthSupplier.OnAzimuthChangedListener,
-        LocationSupplier.OnLocationChangedListener {
+        baseLocationSupplier.OnLocationChangedListener {
 
     void start();
 
@@ -19,5 +19,5 @@ public interface Compass extends AzimuthSupplier.OnAzimuthChangedListener,
 
     void navigateTo(double latitude, double longitude);
 
-    void setOnLocationChangedListener(LocationSupplier.OnLocationChangedListener onLocationChangedListener);
+    void setOnLocationChangedListener(baseLocationSupplier.OnLocationChangedListener onLocationChangedListener);
 }

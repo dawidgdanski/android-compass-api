@@ -14,7 +14,7 @@ import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class NativeLocationSupplier implements LocationSupplier, LocationListener {
+public class NativeLocationSupplier implements baseLocationSupplier, LocationListener {
 
     private static final Criteria DEFAULT_CRITERIA;
 

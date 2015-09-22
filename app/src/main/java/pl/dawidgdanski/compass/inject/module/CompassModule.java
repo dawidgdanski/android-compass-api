@@ -10,7 +10,6 @@ import pl.dawidgdanski.compass.compassapi.MultiCompass;
 import pl.dawidgdanski.compass.compassapi.NativeCompass;
 import pl.dawidgdanski.compass.compassapi.PlayServicesCompass;
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 import pl.dawidgdanski.compass.inject.Qualifiers;

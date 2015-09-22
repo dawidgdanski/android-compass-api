@@ -3,10 +3,12 @@ package pl.dawidgdanski.compass.compassapi;
 import android.app.Activity;
 import android.os.Bundle;
 
+import java.util.Collections;
+
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.ActivityBoundLocationSupplier;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
-import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.util.CompassOptional;
 
 abstract class AbstractActivityBoundCompass extends NativeCompass implements ActivityBoundCompass {
 
@@ -14,22 +16,23 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
 
     private final ActivityBoundLocationSupplier[] additionalSuppliers;
 
-    AbstractActivityBoundCompass(AzimuthSupplier azimuthSupplier,
-                                 ActivityBoundLocationSupplier locationSupplier) {
-        this(azimuthSupplier, locationSupplier, EMPTY);
-    }
+    private final CompassOptional<ActivityBoundLocationSupplier> optionalActivityBoundLocationSupplier;
 
     AbstractActivityBoundCompass(AzimuthSupplier azimuthSupplier,
-                                 LocationSupplier locationSupplier,
-                                 ActivityBoundLocationSupplier... activityBoundSuppliers) {
-        super(azimuthSupplier, locationSupplier);
-        this.additionalSuppliers = activityBoundSuppliers == null ? EMPTY : activityBoundSuppliers;
+                                 baseLocationSupplier baseLocationSupplier,
+                                 ActivityBoundLocationSupplier... activityBoundAdditionalSuppliers) {
+        super(azimuthSupplier, baseLocationSupplier);
+        this.additionalSuppliers = activityBoundAdditionalSuppliers == null ? EMPTY : activityBoundAdditionalSuppliers;
+        this.optionalActivityBoundLocationSupplier =
+                (baseLocationSupplier instanceof ActivityBoundLocationSupplier) ?
+                        CompassOptional.of((ActivityBoundLocationSupplier) baseLocationSupplier) :
+                        CompassOptional.<ActivityBoundLocationSupplier>absent();
     }
 
     @Override
     public synchronized void start() {
         super.start();
-        for(LocationSupplier supplier : additionalSuppliers) {
+        for(baseLocationSupplier supplier : additionalSuppliers) {
             supplier.start(this);
         }
     }
@@ -37,13 +40,17 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     @Override
     public synchronized void stop() {
         super.stop();
-        for(LocationSupplier supplier: additionalSuppliers) {
+        for(baseLocationSupplier supplier: additionalSuppliers) {
             supplier.stop();
         }
     }
 
     @Override
     public synchronized void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityCreated(activity, savedInstanceState);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivityCreated(activity, savedInstanceState);
         }
@@ -52,6 +59,11 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     @Override
     public synchronized void onActivityStarted(Activity activity) {
         start();
+
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityStarted(activity);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivityStarted(activity);
         }
@@ -59,6 +71,10 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
 
     @Override
     public synchronized void onActivityResumed(Activity activity) {
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityResumed(activity);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivityResumed(activity);
         }
@@ -66,6 +82,10 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
 
     @Override
     public synchronized void onActivityPaused(Activity activity) {
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityPaused(activity);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivityPaused(activity);
         }
@@ -73,6 +93,10 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivitySaveInstanceState(activity, outState);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivitySaveInstanceState(activity, outState);
         }
@@ -81,8 +105,12 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     @Override
     public synchronized void onActivityStopped(Activity activity) {
         stop();
+
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityStopped(activity);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
-            supplier.stop();
             supplier.onActivityStopped(activity);
         }
     }
@@ -90,6 +118,11 @@ abstract class AbstractActivityBoundCompass extends NativeCompass implements Act
     @Override
     public synchronized void onActivityDestroyed(Activity activity) {
         destroy();
+
+        if(optionalActivityBoundLocationSupplier.isPresent()) {
+            optionalActivityBoundLocationSupplier.get().onActivityDestroyed(activity);
+        }
+
         for(ActivityBoundLocationSupplier supplier : additionalSuppliers) {
             supplier.onActivityDestroyed(activity);
         }

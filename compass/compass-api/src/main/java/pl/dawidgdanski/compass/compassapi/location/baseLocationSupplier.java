@@ -6,7 +6,7 @@ import android.util.Log;
 
 import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
 
-public interface LocationSupplier {
+public interface baseLocationSupplier {
 
     boolean hasLastKnownLocation();
 

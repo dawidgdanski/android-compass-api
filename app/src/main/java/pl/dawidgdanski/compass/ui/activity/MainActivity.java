@@ -15,15 +15,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
-import pl.dawidgdanski.compass.compassapi.Compass;
-import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.baseLocationSupplier;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 
-public class MainActivity extends AppCompatActivity implements LocationSupplier.OnLocationChangedListener {
+public class MainActivity extends AppCompatActivity implements baseLocationSupplier.OnLocationChangedListener {
 
     @Inject
-    @Named(Qualifiers.MULTI_COMPASS)
+    @Named(Qualifiers.PLAY_SERVICES_COMPASS)
     ActivityBoundCompass compass;
 
     @Bind(R.id.arrow)
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements LocationSupplier.
     protected void onDestroy() {
         super.onDestroy();
         compass.onActivityDestroyed(this);
+        compass = null;
     }
 
     @Override

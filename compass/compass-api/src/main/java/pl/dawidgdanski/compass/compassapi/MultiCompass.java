@@ -9,7 +9,9 @@ public class MultiCompass extends AbstractActivityBoundCompass {
     public MultiCompass(AzimuthSupplier azimuthSupplier,
                         NativeLocationSupplier nativeLocationSupplier,
                         PlayServicesLocationSupplier playServicesLocationSupplier) {
-        super(azimuthSupplier, nativeLocationSupplier, playServicesLocationSupplier);
+        super(azimuthSupplier,
+                nativeLocationSupplier,
+                playServicesLocationSupplier);
     }
 
 }
