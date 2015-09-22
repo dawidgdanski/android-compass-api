@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Build;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -13,10 +15,14 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
+import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
 public class CompassPermissionsTest extends RobolectricUnitTestCase {
+
+    @Rule
+    public final TestRule TEST_EXECUTION_TIME_RULE = new TestExecutionTimeRule();
 
     @Ignore //https://github.com/robolectric/robolectric/issues/2028
     @Test(expected = IllegalStateException.class)

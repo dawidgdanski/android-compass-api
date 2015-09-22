@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -17,6 +19,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
+import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -26,6 +29,9 @@ import static org.mockito.Mockito.inOrder;
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
 @PrepareForTest({Bundle.class})
 public class PlayServicesLocationSupplierTest extends RobolectricUnitTestCase {
+
+    @Rule
+    public final TestRule TEST_EXECUTION_TIME_RULE = new TestExecutionTimeRule();
 
     @Mock
     private Activity activity;

@@ -6,7 +6,9 @@ import android.location.LocationManager;
 import android.os.Build;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,6 +17,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLocationManager;
 
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
+import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
@@ -25,6 +28,9 @@ import static pl.dawidgdanski.compass.compassapi.test.matchers.CompassMatchers.c
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
 public class LocationProviderStateChangeReceiverTest extends RobolectricUnitTestCase {
+
+    @Rule
+    public final TestRule TEST_EXECUTION_TIME_RULE = new TestExecutionTimeRule();
 
     @Mock
     private LocationManager locationManagerMock;

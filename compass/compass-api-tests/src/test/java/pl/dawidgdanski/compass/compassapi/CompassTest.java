@@ -3,7 +3,9 @@ package pl.dawidgdanski.compass.compassapi;
 import android.os.Build;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,6 +15,7 @@ import org.robolectric.annotation.Config;
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
 import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
+import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
 
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
@@ -20,6 +23,9 @@ import static org.mockito.Mockito.verify;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
 public class CompassTest extends RobolectricUnitTestCase {
+
+    @Rule
+    public final TestRule TEST_EXECUTION_TIME_RULE = new TestExecutionTimeRule();
 
     @Mock
     AzimuthSupplier azimuthSupplier;

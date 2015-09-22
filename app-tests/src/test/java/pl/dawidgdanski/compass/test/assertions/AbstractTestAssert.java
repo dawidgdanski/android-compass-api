@@ -1,4 +1,4 @@
-package pl.dawidgdanski.compass.assertions;
+package pl.dawidgdanski.compass.test.assertions;
 
 import android.os.Parcel;
 import android.os.Parcelable;
