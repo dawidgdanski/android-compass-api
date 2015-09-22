@@ -9,9 +9,9 @@ import android.view.Surface;
 
 import pl.dawidgdanski.compass.BuildConfig;
 
-public final class AppUtils {
+public final class ApplicationUtils {
 
-    private AppUtils() { }
+    private ApplicationUtils() { }
 
     public static boolean isThisThreadAMainOne() {
         return Looper.getMainLooper() == Looper.myLooper();
