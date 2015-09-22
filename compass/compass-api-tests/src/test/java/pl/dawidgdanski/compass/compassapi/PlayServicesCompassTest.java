@@ -79,10 +79,4 @@ public class PlayServicesCompassTest extends RobolectricUnitTestCase {
         order.verify(playServicesLocationSupplier).onActivityStopped(same(activity));
         order.verify(playServicesLocationSupplier).onActivityDestroyed(same(activity));
     }
-
-    @Test
-    public void shouldPersistLastKnownLocationDuringConfigurationChange() {
-
-    }
-
 }
