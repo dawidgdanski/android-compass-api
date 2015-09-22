@@ -2,6 +2,7 @@ package pl.dawidgdanski.compass.compassapi;
 
 import android.os.Build;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,6 +15,11 @@ import static org.fest.assertions.Assertions.assertThat;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
 public class CompassApiTest extends RobolectricUnitTestCase {
+
+    @Before
+    public void setUp() {
+        CompassApi.reset();
+    }
 
     @Test
     public void compassApiInitializaionTest() {

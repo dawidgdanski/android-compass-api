@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RuntimeEnvironment;
 
-@RunWith(AppRobolectricTestRunner.class)
+@RunWith(CompassApplicationRobolectricTestRunner.class)
 public class AndroidManifestTest {
 
     @Test

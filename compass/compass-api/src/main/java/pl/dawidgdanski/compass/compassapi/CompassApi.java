@@ -20,4 +20,8 @@ public final class CompassApi {
         return IS_INITIALIZED;
     }
 
+    public static synchronized void reset() {
+        IS_INITIALIZED = false;
+    }
+
 }

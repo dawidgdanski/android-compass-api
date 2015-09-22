@@ -1,5 +1,7 @@
 package pl.dawidgdanski.compass;
 
+import android.content.Context;
+
 import org.robolectric.RuntimeEnvironment;
 
 import pl.dawidgdanski.compass.inject.module.CompassApplicationModule;
@@ -17,6 +19,15 @@ public class TestCompassApplication extends CompassApplication {
 
     public static TestCompassApplication get() {
         return  (TestCompassApplication)RuntimeEnvironment.application;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        try {
+            super.attachBaseContext(base);
+        } catch(NullPointerException e) {
+            //https://github.com/robolectric/robolectric/issues/2028
+        }
     }
 
     @Override

@@ -138,10 +138,6 @@ public class PlayServicesLocationSupplier implements ActivityBoundLocationSuppli
 
     @Override
     public synchronized void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        if(! isInitialized()) {
-            return;
-        }
-
         outState.putParcelable(SAVED_STATE_LAST_KNOWN_LOCATION, lastKnownLocation);
     }
 

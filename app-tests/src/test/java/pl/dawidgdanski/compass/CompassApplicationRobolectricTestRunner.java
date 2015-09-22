@@ -8,12 +8,12 @@ import org.robolectric.annotation.Config;
 import org.robolectric.manifest.AndroidManifest;
 import org.robolectric.res.Fs;
 
-public class AppRobolectricTestRunner extends RobolectricGradleTestRunner {
+public class CompassApplicationRobolectricTestRunner extends RobolectricGradleTestRunner {
 
     private static final int TARGET_SDK_VERSION = Build.VERSION_CODES.LOLLIPOP;
     private static final int MIN_SDK_VERSION = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
 
-    public AppRobolectricTestRunner(Class<?> klass) throws InitializationError {
+    public CompassApplicationRobolectricTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
 
