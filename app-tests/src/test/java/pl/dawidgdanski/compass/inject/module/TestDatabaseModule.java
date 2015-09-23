@@ -24,9 +24,4 @@ public class TestDatabaseModule extends DatabaseModule {
     public SQLiteDatabase provideWritableDatabase(DatabaseHelper databaseHelper) {
         return spy(super.provideWritableDatabase(databaseHelper));
     }
-
-    @Override
-    public PersistenceManager providePersistenceManager(Context applicationContext) {
-        return spy(super.providePersistenceManager(applicationContext));
-    }
 }
