@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -36,6 +38,9 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
 
     @Bind(R.id.my_location_layout)
     LocationLayout myLocationLayout;
+
+    @Bind(R.id.fab)
+    FloatingActionsMenu floatingActionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
