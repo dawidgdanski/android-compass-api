@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CompassView">
+        <attr name="compass_fraction" format="fraction"/>
+        <attr name="arrow_fraction" format="fraction"/>
+    </declare-styleable>
+
+    <declare-styleable name="Entry">
+        <attr name="entry_title" format="string"/>
+    </declare-styleable>
+</resources>

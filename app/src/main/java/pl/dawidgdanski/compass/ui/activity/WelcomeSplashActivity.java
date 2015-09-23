@@ -11,7 +11,7 @@ import pl.dawidgdanski.compass.util.Intents;
 
 public class WelcomeSplashActivity extends AppCompatActivity {
 
-    private static final long DELAY_MILLIS = TimeUnit.SECONDS.toMillis(3);
+    private static final long DELAY_MILLIS = TimeUnit.SECONDS.toMillis(1);
 
     private Handler welcomeSplashDelayHandler;
 
@@ -19,24 +19,29 @@ public class WelcomeSplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ApplicationUtils.setOrientationChangeEnabled(false, this);
-        welcomeSplashDelayHandler = new Handler();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        welcomeSplashDelayHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(Intents.newActivityIntent(WelcomeSplashActivity.this, MainActivity.class));
-                finish();
-            }
-        }, DELAY_MILLIS);
+        if(welcomeSplashDelayHandler == null) {
+            welcomeSplashDelayHandler = new Handler();
+            welcomeSplashDelayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(Intents.newActivityIntent(WelcomeSplashActivity.this, MainActivity.class));
+                    finish();
+                }
+            }, DELAY_MILLIS);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        welcomeSplashDelayHandler.removeCallbacksAndMessages(null);
+        if(welcomeSplashDelayHandler != null) {
+            welcomeSplashDelayHandler.removeCallbacksAndMessages(null);
+        }
         super.onBackPressed();
     }
 

@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="invalid_latitute_applied">Invalid latitude applied</string>
+    <string name="latitude_out_of_range">Latitude out of range</string>
+    <string name="invalid_longitude_applied">Invalidate longitude</string>
+    <string name="longitude_out_of_range">Longitude out of range</string>
+    <string name="entry_address">Address:</string>
+    <string name="entry_latitude">Latitude:</string>
+    <string name="entry_longitude">Longitude:</string>
 </resources>

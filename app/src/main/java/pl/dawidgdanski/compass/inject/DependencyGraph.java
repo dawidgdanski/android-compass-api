@@ -3,6 +3,7 @@ package pl.dawidgdanski.compass.inject;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.dawidgdanski.compass.exception.ValidationException;
 import pl.dawidgdanski.compass.inject.module.CompassApplicationModule;
 import pl.dawidgdanski.compass.inject.module.CompassModule;
 import pl.dawidgdanski.compass.inject.module.DatabaseModule;
@@ -23,4 +24,6 @@ public interface DependencyGraph {
         void inject(AppContentProvider contentProvider);
 
         void inject(MainActivity mainActivity);
+
+        void inject(ValidationException exception);
 }

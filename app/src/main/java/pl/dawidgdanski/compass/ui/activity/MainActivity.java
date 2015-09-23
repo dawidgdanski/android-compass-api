@@ -1,12 +1,10 @@
 package pl.dawidgdanski.compass.ui.activity;
 
 import android.location.Location;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,15 +16,23 @@ import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
+import pl.dawidgdanski.compass.ui.view.CompassView;
+import pl.dawidgdanski.compass.ui.view.LocationLayout;
 
-public class MainActivity extends AppCompatActivity implements LocationSupplier.OnLocationChangedListener {
+public class MainActivity extends BaseActivity implements LocationSupplier.OnLocationChangedListener {
 
     @Inject
     @Named(Qualifiers.PLAY_SERVICES_COMPASS)
     ActivityBoundCompass compass;
 
-    @Bind(R.id.arrow)
-    View arrow;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.compass_view)
+    CompassView compassView;
+
+    @Bind(R.id.coordinates_panel)
+    LocationLayout coordinatesPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +40,10 @@ public class MainActivity extends AppCompatActivity implements LocationSupplier.
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
         DependencyInjector.getGraph().inject(this);
+        setUpActionBar(toolbar);
+        setUpActionBarTitle(getString(R.string.app_name));
 
-        compass.setView(arrow);
+        compass.setView(compassView.getArrowView());
         compass.setOnLocationChangedListener(this);
         compass.onActivityCreated(this, savedInstanceState);
     }
@@ -90,6 +98,6 @@ public class MainActivity extends AppCompatActivity implements LocationSupplier.
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(this, "Location changed", Toast.LENGTH_SHORT).show();
+        coordinatesPanel.setLocation(location);
     }
 }

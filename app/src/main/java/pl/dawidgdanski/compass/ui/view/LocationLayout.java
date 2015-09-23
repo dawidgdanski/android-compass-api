@@ -1,0 +1,70 @@
+package pl.dawidgdanski.compass.ui.view;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.location.Location;
+import android.os.Build;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import pl.dawidgdanski.compass.R;
+
+public class LocationLayout extends LinearLayout {
+
+    private static final int LAYOUT_WEIGHT_SUM = 3;
+
+    @Bind(R.id.address_entry)
+    Entry address;
+
+    @Bind(R.id.latitude_entry)
+    Entry latitude;
+
+    @Bind(R.id.longitude_entry)
+    Entry longitude;
+
+    public LocationLayout(Context context) {
+        super(context);
+        initialize();
+    }
+
+    public LocationLayout(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public LocationLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        setOrientation(VERTICAL);
+        setWeightSum(LAYOUT_WEIGHT_SUM);
+        initialize();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public LocationLayout(Context context,
+                          AttributeSet attrs,
+                          int defStyleAttr,
+                          int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initialize();
+    }
+
+    private void initialize() {
+        inflate(getContext(), R.layout.merge_location_layout_content, this);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        ButterKnife.bind(this, this);
+    }
+
+    public void setAddress(final String addressString) {
+        address.setValue(addressString);
+    }
+
+    public void setLocation(final Location location) {
+        longitude.setValue(String.valueOf(location.getLatitude()));
+        latitude.setValue(String.valueOf(location.getLongitude()));
+    }
+}

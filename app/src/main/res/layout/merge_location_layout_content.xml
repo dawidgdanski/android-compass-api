@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:entry="http://schemas.android.com/apk/res-auto">
+
+   <pl.dawidgdanski.compass.ui.view.Entry
+       android:id="@+id/address_entry"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
+       entry:entry_title="@string/entry_address"/>
+
+    <pl.dawidgdanski.compass.ui.view.Entry
+        android:id="@+id/latitude_entry"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        entry:entry_title="@string/entry_latitude"/>
+
+    <pl.dawidgdanski.compass.ui.view.Entry
+        android:id="@+id/longitude_entry"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        entry:entry_title="@string/entry_longitude"/>
+
+</merge>

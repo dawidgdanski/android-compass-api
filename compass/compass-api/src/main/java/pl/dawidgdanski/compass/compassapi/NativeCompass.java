@@ -13,7 +13,7 @@ import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
 public class NativeCompass implements Compass {
 
-    private final LocationSupplier nativeLocationSupplier;
+    private final LocationSupplier baseLocationSupplier;
 
     private final AzimuthSupplier azimuthSupplier;
 
@@ -26,18 +26,18 @@ public class NativeCompass implements Compass {
     private LocationSupplier.OnLocationChangedListener onLocationChangedListener = LocationSupplier.OnLocationChangedListener.NULL_LISTENER;
 
     public NativeCompass(AzimuthSupplier azimuthSupplier,
-                         LocationSupplier nativeLocationSupplier) {
+                         LocationSupplier baseLocationSupplier) {
 
         CompassPreconditions.checkState(CompassApi.isInitialized(), "Compass API is not initialized, please initialize it in your application.");
 
         CompassPreconditions.checkNotNull(azimuthSupplier, "Azimuth Supplier cannot be null");
-        CompassPreconditions.checkNotNull(nativeLocationSupplier, "Location supplier cannot be null");
+        CompassPreconditions.checkNotNull(baseLocationSupplier, "Location supplier cannot be null");
 
         this.azimuthSupplier = azimuthSupplier;
-        this.nativeLocationSupplier = nativeLocationSupplier;
+        this.baseLocationSupplier = baseLocationSupplier;
 
         try {
-            this.myLocation = nativeLocationSupplier.getLastKnownLocation();
+            this.myLocation = baseLocationSupplier.getLastKnownLocation();
         } catch (LocationAbsentException ignored) {
         }
     }
@@ -45,13 +45,13 @@ public class NativeCompass implements Compass {
     @Override
     public synchronized void start() {
         azimuthSupplier.start(this);
-        nativeLocationSupplier.start(this);
+        baseLocationSupplier.start(this);
     }
 
     @Override
     public synchronized void stop() {
         azimuthSupplier.stop();
-        nativeLocationSupplier.stop();
+        baseLocationSupplier.stop();
 
         final View view = this.view;
 
