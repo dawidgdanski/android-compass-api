@@ -3,6 +3,8 @@ package pl.dawidgdanski.compass.compassapi.geomagnetic;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.view.Display;
+import android.view.Surface;
 import android.view.WindowManager;
 
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
@@ -17,6 +19,8 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     private final SensorManager sensorManager;
     private final Sensor gravitySensor;
     private final Sensor magenticFieldSensor;
+
+    private final Display display;
 
     private final float[] gravity = new float[3];
     private final float[] geoMagnetic = new float[3];
@@ -37,9 +41,10 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
         CompassPreconditions.checkNotNull(windowManager, "WindowManager cannot be null");
 
         this.sensorManager = sensorManager;
-
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magenticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        this.display = windowManager.getDefaultDisplay();
     }
 
     @Override
@@ -93,6 +98,7 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
                 azimuth = (float) Math.toDegrees(orientation[0]);
                 azimuth = (azimuth + ANGLE_360) % ANGLE_360;
                 azimuth -= bearing;
+                azimuth += compensateOrientationChange(display.getRotation());
                 onAzimuthChangedListener.onAzimuthChanged(currentAzimuth, azimuth);
             }
             currentAzimuth = azimuth;
@@ -102,5 +108,18 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private static float compensateOrientationChange(final int rotation) {
+        switch (rotation) {
+            case Surface.ROTATION_90:
+                return 0.0f;
+            case Surface.ROTATION_180:
+                return 0.0f;
+            case Surface.ROTATION_270:
+                return 0.0f;
+            default:
+                return 0.0f;
+        }
     }
 }
