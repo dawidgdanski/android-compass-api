@@ -9,11 +9,13 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(project.COMPASS_API_VERSION_CODE)
         versionName project.COMPASS_API_VERSION_NAME
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     buildTypes {
         release {
-            consumerProguardFiles 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
