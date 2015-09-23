@@ -4,6 +4,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:background="@color/theme_green_light"
+    android:background="@color/theme_dark_grey"
     app:theme="@style/Toolbar"
     app:popupTheme="@style/ToolbarPopup"/>

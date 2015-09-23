@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -103,23 +102,6 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         myLocationLayout.setLocation(location);
     }
@@ -157,12 +139,15 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
 
     @Override
     public void onLocationSaved(MyLocation myLocation) {
-        destinationLayout.setLocation(myLocation);
-        compass.navigateTo(myLocation.getLatitude(), myLocation.getLongitude());
+        onDestinationChange(myLocation);
     }
 
     @Override
     public void onLocationPicked(MyLocation location) {
+        onDestinationChange(location);
+    }
+
+    private void onDestinationChange(MyLocation location) {
         destinationLayout.setLocation(location);
         compass.navigateTo(location.getLatitude(), location.getLongitude());
     }
