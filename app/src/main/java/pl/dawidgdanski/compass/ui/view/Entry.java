@@ -4,6 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,7 +60,12 @@ public class Entry extends LinearLayout {
         titleText.setText(title);
     }
 
+    public String getValue() {
+        return valueText.getText().toString();
+    }
+
     private void initialize(AttributeSet attrs) {
+        setSaveEnabled(true);
         final Context context = getContext();
         inflate(context, R.layout.entry, this);
 

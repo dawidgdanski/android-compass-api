@@ -99,4 +99,8 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
             final double longitude = longitudeEntry.getValue();
         }
     }
+
+    public interface OnLocationSavedListener {
+        void onLocationSaved();
+    }
 }
