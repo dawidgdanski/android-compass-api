@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,10 +16,10 @@
         <pl.dawidgdanski.compass.ui.view.CompassView
             android:id="@+id/compass_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            compass:compass_fraction="75%"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             compass:arrow_fraction="75%"
-            android:layout_weight="1"/>
+            compass:compass_fraction="75%" />
 
         <ScrollView
             android:layout_width="0dp"
@@ -32,16 +32,16 @@
                 android:orientation="vertical">
 
                 <pl.dawidgdanski.compass.ui.view.LocationLayout
-                    compass:header_title="@string/destination"
                     android:id="@+id/destination_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    compass:header_title="@string/destination" />
 
                 <pl.dawidgdanski.compass.ui.view.LocationLayout
-                    compass:header_title="@string/my_location"
                     android:id="@+id/my_location_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    compass:header_title="@string/my_location" />
 
             </LinearLayout>
 
