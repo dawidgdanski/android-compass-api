@@ -8,4 +8,8 @@
     <declare-styleable name="Entry">
         <attr name="entry_title" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="LocationLayout">
+        <attr name="header_title" format="string"/>
+    </declare-styleable>
 </resources>

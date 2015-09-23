@@ -13,16 +13,30 @@
         compass:compass_fraction="75%"
         compass:arrow_fraction="85%"/>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <pl.dawidgdanski.compass.ui.view.LocationLayout
-            android:id="@+id/coordinates_panel"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:orientation="vertical"
+            android:weightSum="2">
 
-    </RelativeLayout>
+            <pl.dawidgdanski.compass.ui.view.LocationLayout
+                compass:header_title="@string/destination"
+                android:id="@+id/destination_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <pl.dawidgdanski.compass.ui.view.LocationLayout
+                compass:header_title="@string/my_location"
+                android:id="@+id/my_location_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

@@ -31,8 +31,11 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     @Bind(R.id.compass_view)
     CompassView compassView;
 
-    @Bind(R.id.coordinates_panel)
-    LocationLayout coordinatesPanel;
+    @Bind(R.id.destination_layout)
+    LocationLayout destinationLayout;
+
+    @Bind(R.id.my_location_layout)
+    LocationLayout myLocationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,6 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
 
     @Override
     public void onLocationChanged(Location location) {
-        coordinatesPanel.setLocation(location);
+        myLocationLayout.setLocation(location);
     }
 }

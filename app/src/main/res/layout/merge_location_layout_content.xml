@@ -2,6 +2,11 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:entry="http://schemas.android.com/apk/res-auto">
 
+    <TextView android:id="@+id/header_title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textAppearance="@android:style/TextAppearance.Medium"/>
+
    <pl.dawidgdanski.compass.ui.view.Entry
        android:id="@+id/address_entry"
        android:layout_width="match_parent"

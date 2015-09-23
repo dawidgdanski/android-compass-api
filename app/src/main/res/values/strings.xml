@@ -10,4 +10,6 @@
     <string name="entry_address">Address:</string>
     <string name="entry_latitude">Latitude:</string>
     <string name="entry_longitude">Longitude:</string>
+    <string name="destination">Destination</string>
+    <string name="my_location">My location</string>
 </resources>
