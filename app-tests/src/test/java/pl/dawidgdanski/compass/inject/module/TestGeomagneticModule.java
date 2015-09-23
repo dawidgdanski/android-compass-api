@@ -1,6 +1,7 @@
 package pl.dawidgdanski.compass.inject.module;
 
 import android.hardware.SensorManager;
+import android.view.WindowManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,7 +13,7 @@ import static org.mockito.Mockito.spy;
 public class TestGeomagneticModule extends GeomagneticModule {
 
     @Override
-    public AzimuthSupplier provideAzimuthSupplier(SensorManager sensorManager) {
-        return spy(super.provideAzimuthSupplier(sensorManager));
+    public AzimuthSupplier provideAzimuthSupplier(SensorManager sensorManager, WindowManager windowManager) {
+        return spy(super.provideAzimuthSupplier(sensorManager, windowManager));
     }
 }

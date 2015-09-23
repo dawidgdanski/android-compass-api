@@ -33,4 +33,6 @@ public class TestCompassApplicationModule extends CompassApplicationModule {
     public ContentResolver provideContentResolver() {
         return spy(super.provideContentResolver());
     }
+
+
 }

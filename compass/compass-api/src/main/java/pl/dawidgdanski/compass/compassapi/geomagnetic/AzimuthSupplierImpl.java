@@ -3,6 +3,7 @@ package pl.dawidgdanski.compass.compassapi.geomagnetic;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.view.WindowManager;
 
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
@@ -31,8 +32,9 @@ public class AzimuthSupplierImpl implements AzimuthSupplier {
 
     private OnAzimuthChangedListener onAzimuthChangedListener = OnAzimuthChangedListener.NULL_LISTENER;
 
-    public AzimuthSupplierImpl(final SensorManager sensorManager) {
+    public AzimuthSupplierImpl(final SensorManager sensorManager, final WindowManager windowManager) {
         CompassPreconditions.checkNotNull(sensorManager, "SensorManager cannot be null");
+        CompassPreconditions.checkNotNull(windowManager, "WindowManager cannot be null");
 
         this.sensorManager = sensorManager;
 
