@@ -47,6 +47,7 @@ public class MyLocationsAdapter extends ArrayAdapter<MyLocation>{
                                     Double.valueOf(input.getString(columnLatitude)),
                                     Double.valueOf(input.getString(columnLongitude)))
                     );
+                    input.moveToNext();
                 }
             }
 

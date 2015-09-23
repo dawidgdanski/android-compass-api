@@ -1,5 +1,6 @@
 package pl.dawidgdanski.compass.database.model;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,6 +8,7 @@ import android.os.Parcelable;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
+import pl.dawidgdanski.compass.database.contract.MyLocationContract;
 import pl.dawidgdanski.compass.util.Ranges;
 
 public class MyLocation implements Parcelable {
@@ -92,5 +94,13 @@ public class MyLocation implements Parcelable {
         bundle.putDouble(PARCELABLE_LONGITUDE, longitude);
 
         dest.writeBundle(bundle);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MyLocationContract.Table.COLUMN_LATITUDE, String.valueOf(latitude));
+        contentValues.put(MyLocationContract.Table.COLUMN_LONGITUDE, String.valueOf(longitude));
+
+        return contentValues;
     }
 }

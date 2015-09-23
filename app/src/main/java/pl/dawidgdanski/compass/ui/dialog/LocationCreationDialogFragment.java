@@ -13,10 +13,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.database.model.MyLocation;
+import pl.dawidgdanski.compass.database.model.PersistenceManager;
+import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.ui.validation.LatitudeTextValidator;
 import pl.dawidgdanski.compass.ui.validation.LongitudeTextValidator;
 import pl.dawidgdanski.compass.ui.view.CoordinateEntry;
@@ -33,6 +37,9 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
         return dialogFragment;
     }
 
+    @Inject
+    PersistenceManager persistenceManager;
+
     @Bind(R.id.dialog_latitude_entry)
     CoordinateEntry latitudeEntry;
 
@@ -40,6 +47,12 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
     CoordinateEntry longitudeEntry;
 
     private OnLocationSavedListener onLocationSavedListener;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DependencyInjector.getGraph().inject(this);
+    }
 
     @NonNull
     @Override
@@ -105,7 +118,10 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
             final double latitude = latitudeEntry.getValue();
             final double longitude = longitudeEntry.getValue();
             if(onLocationSavedListener != null) {
-                onLocationSavedListener.onLocationSaved(new MyLocation(latitude, longitude));
+                final MyLocation myLocation = new MyLocation(latitude, longitude);
+                persistenceManager.persistLocation(myLocation);
+
+                onLocationSavedListener.onLocationSaved(myLocation);
                 dismiss();
             }
         }

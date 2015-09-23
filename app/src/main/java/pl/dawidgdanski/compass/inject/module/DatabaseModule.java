@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.dawidgdanski.compass.database.DatabaseHelper;
+import pl.dawidgdanski.compass.database.model.PersistenceManager;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 
 @Module
@@ -32,5 +33,11 @@ public class DatabaseModule {
     @Named(Qualifiers.WRITABLE_DATABASE)
     public SQLiteDatabase provideWritableDatabase(DatabaseHelper databaseHelper) {
         return databaseHelper.getWritableDatabase();
+    }
+
+    @Provides
+    @Singleton
+    public PersistenceManager providePersistenceManager(Context applicationContext) {
+        return new PersistenceManager(applicationContext);
     }
 }

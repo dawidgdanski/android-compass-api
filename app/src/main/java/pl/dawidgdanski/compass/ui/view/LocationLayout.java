@@ -16,6 +16,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
+import pl.dawidgdanski.compass.database.model.MyLocation;
 
 public class LocationLayout extends LinearLayout {
 
@@ -123,6 +124,11 @@ public class LocationLayout extends LinearLayout {
 
     public void setAddress(final String addressString) {
         address.setValue(addressString);
+    }
+
+    public void setLocation(final MyLocation location) {
+        longitude.setValue(String.valueOf(location.getLatitude()));
+        latitude.setValue(String.valueOf(location.getLongitude()));
     }
 
     public void setLocation(final Location location) {

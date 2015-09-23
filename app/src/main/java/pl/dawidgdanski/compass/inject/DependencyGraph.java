@@ -11,6 +11,7 @@ import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.LocationModule;
 import pl.dawidgdanski.compass.provider.AppContentProvider;
 import pl.dawidgdanski.compass.ui.activity.MainActivity;
+import pl.dawidgdanski.compass.ui.dialog.LocationCreationDialogFragment;
 
 @Singleton
 @Component(modules = {
@@ -26,4 +27,6 @@ public interface DependencyGraph {
         void inject(MainActivity mainActivity);
 
         void inject(ValidationException exception);
+
+        void inject(LocationCreationDialogFragment fragment);
 }

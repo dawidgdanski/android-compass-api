@@ -135,6 +135,7 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
                 MyLocationsDialogFragment dialogFragment = MyLocationsDialogFragment.newInstance();
                 dialogFragment.setLocationPickedListener(MainActivity.this);
                 dialogFragment.show(getSupportFragmentManager(), MyLocationsDialogFragment.TAG);
+                floatingActionMenu.collapse();
             }
         });
 
@@ -156,11 +157,13 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
 
     @Override
     public void onLocationSaved(MyLocation myLocation) {
-        Toast.makeText(this, "SDFDS", Toast.LENGTH_SHORT).show();
+        destinationLayout.setLocation(myLocation);
+        compass.navigateTo(myLocation.getLatitude(), myLocation.getLongitude());
     }
 
     @Override
     public void onLocationPicked(MyLocation location) {
+        destinationLayout.setLocation(location);
         compass.navigateTo(location.getLatitude(), location.getLongitude());
     }
 
