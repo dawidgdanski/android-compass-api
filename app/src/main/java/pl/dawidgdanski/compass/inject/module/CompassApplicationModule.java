@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.view.LayoutInflater;
 
 import javax.inject.Singleton;
 
@@ -55,6 +57,18 @@ public class CompassApplicationModule {
     @Singleton
     public LocationManager provideLocationManager() {
         return (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    LayoutInflater provideLayoutInflater() {
+        return (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    LocalBroadcastManager provideLocalBroadcastManager() {
+        return LocalBroadcastManager.getInstance(application);
     }
 
 }

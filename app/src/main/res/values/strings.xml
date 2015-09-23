@@ -12,4 +12,7 @@
     <string name="entry_longitude">Longitude:</string>
     <string name="destination">Destination</string>
     <string name="my_location">My location</string>
+    <string name="save">Save</string>
+    <string name="dot">.</string>
+    <string name="incorect_floating_point_value">Incorrect floating point value</string>
 </resources>
