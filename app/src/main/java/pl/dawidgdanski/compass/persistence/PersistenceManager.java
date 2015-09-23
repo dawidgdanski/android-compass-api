@@ -1,4 +1,4 @@
-package pl.dawidgdanski.compass.database.model;
+package pl.dawidgdanski.compass.persistence;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Context;
 import com.google.common.base.Preconditions;
 
 import pl.dawidgdanski.compass.database.contract.MyLocationContract;
+import pl.dawidgdanski.compass.database.model.MyLocation;
 
 public class PersistenceManager {
 

@@ -3,14 +3,8 @@ package pl.dawidgdanski.compass.inject.module;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import pl.dawidgdanski.compass.database.DatabaseHelper;
-import pl.dawidgdanski.compass.database.model.PersistenceManager;
-import pl.dawidgdanski.compass.inject.Qualifiers;
+import pl.dawidgdanski.compass.persistence.PersistenceManager;
 
 import static org.mockito.Mockito.spy;
 

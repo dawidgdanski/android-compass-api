@@ -11,6 +11,7 @@ import pl.dawidgdanski.compass.inject.module.CompassModule;
 import pl.dawidgdanski.compass.inject.module.DatabaseModule;
 import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.LocationModule;
+import pl.dawidgdanski.compass.inject.module.PersistenceModule;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -58,5 +59,10 @@ public class CompassApplication extends Application implements ModuleProvisionCo
     @Override
     public LocationModule getLocationModule(CompassApplication compassApplication) {
         return new LocationModule();
+    }
+
+    @Override
+    public PersistenceModule getPersistenceModule(CompassApplication compassApplication) {
+        return new PersistenceModule();
     }
 }

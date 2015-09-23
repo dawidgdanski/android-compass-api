@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.database.model.MyLocation;
-import pl.dawidgdanski.compass.database.model.PersistenceManager;
+import pl.dawidgdanski.compass.persistence.PersistenceManager;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.ui.validation.LatitudeTextValidator;
 import pl.dawidgdanski.compass.ui.validation.LongitudeTextValidator;

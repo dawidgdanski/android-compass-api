@@ -9,11 +9,13 @@ import pl.dawidgdanski.compass.inject.module.CompassModule;
 import pl.dawidgdanski.compass.inject.module.DatabaseModule;
 import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.LocationModule;
+import pl.dawidgdanski.compass.inject.module.PersistenceModule;
 import pl.dawidgdanski.compass.inject.module.TestCompassApplicationModule;
 import pl.dawidgdanski.compass.inject.module.TestCompassModule;
 import pl.dawidgdanski.compass.inject.module.TestDatabaseModule;
 import pl.dawidgdanski.compass.inject.module.TestGeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.TestLocationModule;
+import pl.dawidgdanski.compass.inject.module.TestPersistenceModule;
 
 public class TestCompassApplication extends CompassApplication {
 
@@ -58,5 +60,10 @@ public class TestCompassApplication extends CompassApplication {
     @Override
     public LocationModule getLocationModule(CompassApplication compassApplication) {
         return new TestLocationModule();
+    }
+
+    @Override
+    public PersistenceModule getPersistenceModule(CompassApplication compassApplication) {
+        return new TestPersistenceModule();
     }
 }

@@ -15,6 +15,7 @@ interface MainComponent extends DependencyGraph {
                     .databaseModule(moduleProvisionContract.getDatabaseModule(app))
                     .geomagneticModule(moduleProvisionContract.getGeomagneticModule(app))
                     .locationModule(moduleProvisionContract.getLocationModule(app))
+                    .persistenceModule(moduleProvisionContract.getPersistenceModule(app))
                     .build();
         }
     }

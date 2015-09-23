@@ -6,6 +6,7 @@ import pl.dawidgdanski.compass.inject.module.CompassModule;
 import pl.dawidgdanski.compass.inject.module.DatabaseModule;
 import pl.dawidgdanski.compass.inject.module.GeomagneticModule;
 import pl.dawidgdanski.compass.inject.module.LocationModule;
+import pl.dawidgdanski.compass.inject.module.PersistenceModule;
 
 public interface ModuleProvisionContract {
 
@@ -18,4 +19,6 @@ public interface ModuleProvisionContract {
     GeomagneticModule getGeomagneticModule(CompassApplication compassApplication);
 
     LocationModule getLocationModule(CompassApplication compassApplication);
+
+    PersistenceModule getPersistenceModule(CompassApplication compassApplication);
 }
