@@ -6,18 +6,20 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.TimeUnit;
 
+import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.util.ApplicationUtils;
 import pl.dawidgdanski.compass.util.Intents;
 
 public class WelcomeSplashActivity extends AppCompatActivity {
 
-    private static final long DELAY_MILLIS = TimeUnit.SECONDS.toMillis(1);
+    private static final long DELAY_MILLIS = TimeUnit.SECONDS.toMillis(2);
 
     private Handler welcomeSplashDelayHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_screen);
         ApplicationUtils.setOrientationChangeEnabled(false, this);
 
     }
