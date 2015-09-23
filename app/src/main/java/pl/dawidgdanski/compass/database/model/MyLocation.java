@@ -33,6 +33,8 @@ public class MyLocation implements Parcelable {
 
     private final double longitude;
 
+    private final String toString;
+
     private final int hashCode;
 
     public MyLocation(double latitude, double longitude) {
@@ -40,6 +42,7 @@ public class MyLocation implements Parcelable {
         Preconditions.checkArgument(Ranges.LONGITUDE_RANGE.contains(longitude), "Invalid longitude");
         this.latitude = latitude;
         this.longitude = longitude;
+        this.toString = String.format("lat: %s, lng: %s", String.valueOf(latitude), String.valueOf(longitude));
         this.hashCode = Objects.hashCode(latitude, longitude);
     }
 
@@ -70,6 +73,11 @@ public class MyLocation implements Parcelable {
 
         return this.latitude == location.latitude &&
                 this.longitude == location.longitude;
+    }
+
+    @Override
+    public String toString() {
+        return toString;
     }
 
     @Override

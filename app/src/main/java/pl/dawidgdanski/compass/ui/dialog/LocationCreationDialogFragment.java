@@ -16,12 +16,15 @@ import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
+import pl.dawidgdanski.compass.database.model.MyLocation;
 import pl.dawidgdanski.compass.ui.validation.LatitudeTextValidator;
 import pl.dawidgdanski.compass.ui.validation.LongitudeTextValidator;
 import pl.dawidgdanski.compass.ui.view.CoordinateEntry;
 
 public class LocationCreationDialogFragment extends DialogFragment implements DialogInterface.OnClickListener,
         DialogInterface.OnShowListener{
+
+    public static final String TAG = LocationCreationDialogFragment.class.getSimpleName();
 
     public static LocationCreationDialogFragment newInstance() {
         LocationCreationDialogFragment dialogFragment = new LocationCreationDialogFragment();
@@ -36,6 +39,8 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
 
     @Bind(R.id.dialog_longitude_entry)
     CoordinateEntry longitudeEntry;
+
+    private OnLocationSavedListener onLocationSavedListener;
 
     @NonNull
     @Override
@@ -84,6 +89,11 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        onLocationSavedListener = null;
+    }
+
+    public void setOnLocationSavedListener(OnLocationSavedListener listener) {
+        this.onLocationSavedListener = listener;
     }
 
     private void initializeEntries() {
@@ -97,10 +107,13 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
         if(result) {
             final double latitude = latitudeEntry.getValue();
             final double longitude = longitudeEntry.getValue();
+            if(onLocationSavedListener != null) {
+                onLocationSavedListener.onLocationSaved(new MyLocation(latitude, longitude));
+            }
         }
     }
 
     public interface OnLocationSavedListener {
-        void onLocationSaved();
+        void onLocationSaved(MyLocation myLocation);
     }
 }

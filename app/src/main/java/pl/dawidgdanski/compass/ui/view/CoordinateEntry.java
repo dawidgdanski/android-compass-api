@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -91,9 +90,7 @@ public class CoordinateEntry extends LinearLayout implements SelfValidable, Text
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(!(TextUtils.isEmpty(decimalPartText.getText()) && TextUtils.isEmpty(floatingPartText.getText()))) {
-            validateSelf();
-        }
+        validateSelf();
     }
 
     @Override

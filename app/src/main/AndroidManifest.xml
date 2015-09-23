@@ -25,6 +25,11 @@
         </activity>
 
         <activity android:name=".ui.activity.MainActivity"/>
+
+        <provider
+            android:authorities="pl.dawidgdanski.compass.provider.data"
+            android:name=".provider.AppContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

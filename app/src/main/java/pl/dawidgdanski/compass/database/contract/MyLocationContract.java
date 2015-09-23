@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-public final class LocationContract {
+public final class MyLocationContract {
 
     public static final Uri CONTENT_URI = Contracts.parseUri(Table.TABLE_NAME);
 
@@ -29,13 +29,13 @@ public final class LocationContract {
 
     public static final class Table implements BaseColumns {
 
-        public static final String TABLE_NAME = "location";
+        public static final String TABLE_NAME = "my_location";
 
         public static final String COLUMN_LATITUDE = "latitude";
 
         public static final String COLUMN_LONGITUDE = "longitude";
     }
 
-    private LocationContract() { }
+    private MyLocationContract() { }
 
 }

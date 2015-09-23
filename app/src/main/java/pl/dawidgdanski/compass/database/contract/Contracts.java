@@ -55,23 +55,23 @@ public final class Contracts {
     private enum ContentMetaDataHolder implements ContentMetaData {
 
         LOCATIONS_COLLECTION(
-                LOCATION_SINGLE_ITEM_URI_INDICATOR,
-                LocationContract.CONTENT_URI,
-                LocationContract.Table.TABLE_NAME,
-                LocationContract.PROJECTION_MAP,
-                LocationContract.DEFAULT_SORT_ORDER,
-                LocationContract.CONTENT_TYPE_COLLECTION,
-                LocationContract.BOUND_NOTIFICATION_URIS,
+                LOCATION_COLLECTION_URI_INDICATOR,
+                MyLocationContract.CONTENT_URI,
+                MyLocationContract.Table.TABLE_NAME,
+                MyLocationContract.PROJECTION_MAP,
+                MyLocationContract.DEFAULT_SORT_ORDER,
+                MyLocationContract.CONTENT_TYPE_COLLECTION,
+                MyLocationContract.BOUND_NOTIFICATION_URIS,
                 false),
 
         LOCATIONS_ITEM(
                 LOCATION_SINGLE_ITEM_URI_INDICATOR,
-                LocationContract.CONTENT_URI,
-                LocationContract.Table.TABLE_NAME,
-                LocationContract.PROJECTION_MAP,
-                LocationContract.DEFAULT_SORT_ORDER,
-                LocationContract.CONTENT_TYPE_SINGLE_ITEM,
-                LocationContract.BOUND_NOTIFICATION_URIS,
+                MyLocationContract.CONTENT_URI,
+                MyLocationContract.Table.TABLE_NAME,
+                MyLocationContract.PROJECTION_MAP,
+                MyLocationContract.DEFAULT_SORT_ORDER,
+                MyLocationContract.CONTENT_TYPE_SINGLE_ITEM,
+                MyLocationContract.BOUND_NOTIFICATION_URIS,
                 true);
 
         private final Uri uri;

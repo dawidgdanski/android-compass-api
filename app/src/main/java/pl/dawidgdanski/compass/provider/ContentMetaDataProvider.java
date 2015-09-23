@@ -4,7 +4,7 @@ import android.content.UriMatcher;
 import android.net.Uri;
 
 import pl.dawidgdanski.compass.database.contract.Contracts;
-import pl.dawidgdanski.compass.database.contract.LocationContract;
+import pl.dawidgdanski.compass.database.contract.MyLocationContract;
 
 final class ContentMetaDataProvider {
 
@@ -15,11 +15,11 @@ final class ContentMetaDataProvider {
 
         URI_MATCHER.addURI(
                 AppContentProvider.AUTHORITY,
-                LocationContract.Table.TABLE_NAME,
+                MyLocationContract.Table.TABLE_NAME,
                 ContentMetaData.LOCATION_COLLECTION_URI_INDICATOR);
         URI_MATCHER.addURI(
                 AppContentProvider.AUTHORITY,
-                LocationContract.Table.TABLE_NAME + "/#",
+                MyLocationContract.Table.TABLE_NAME + "/#",
                 ContentMetaData.LOCATION_SINGLE_ITEM_URI_INDICATOR);
     }
 

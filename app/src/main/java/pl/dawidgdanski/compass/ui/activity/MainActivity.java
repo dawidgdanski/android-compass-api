@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -20,14 +22,17 @@ import butterknife.ButterKnife;
 import pl.dawidgdanski.compass.R;
 import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
+import pl.dawidgdanski.compass.database.model.MyLocation;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 import pl.dawidgdanski.compass.ui.dialog.LocationCreationDialogFragment;
+import pl.dawidgdanski.compass.ui.dialog.MyLocationsDialogFragment;
 import pl.dawidgdanski.compass.ui.view.CompassView;
 import pl.dawidgdanski.compass.ui.view.LocationLayout;
-import pl.dawidgdanski.compass.util.Constants;
 
-public class MainActivity extends BaseActivity implements LocationSupplier.OnLocationChangedListener {
+public class MainActivity extends BaseActivity implements LocationSupplier.OnLocationChangedListener,
+        LocationCreationDialogFragment.OnLocationSavedListener,
+        MyLocationsDialogFragment.OnLocationPickedListener {
 
     @Inject
     @Named(Qualifiers.PLAY_SERVICES_COMPASS)
@@ -61,32 +66,8 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
         compass.setView(compassView.getArrowView());
         compass.setOnLocationChangedListener(this);
         compass.onActivityCreated(this, savedInstanceState);
-    }
 
-    private void setUpFloatingActionMenu() {
-        final Context context = getBaseContext();
-        Resources resources = getResources();
-        FloatingActionButton showMyLocationsButton = new FloatingActionButton(context);
-        showMyLocationsButton.setTitle(resources.getString(R.string.my_locations));
-        showMyLocationsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        FloatingActionButton addNewLocationButton = new FloatingActionButton(context);
-        addNewLocationButton.setTitle(resources.getString(R.string.add_location));
-        addNewLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationCreationDialogFragment.newInstance().show(getSupportFragmentManager(), Constants.DIALOG);
-                floatingActionMenu.collapse();
-            }
-        });
-
-        floatingActionMenu.addButton(addNewLocationButton);
-        floatingActionMenu.addButton(showMyLocationsButton);
+        restoreFragmentsState(savedInstanceState);
     }
 
     @Override
@@ -105,6 +86,7 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         compass.onActivitySaveInstanceState(this, outState);
+        saveFragmentsInstanceState(outState);
     }
 
     @Override
@@ -140,5 +122,83 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     @Override
     public void onLocationChanged(Location location) {
         myLocationLayout.setLocation(location);
+    }
+
+    private void setUpFloatingActionMenu() {
+        final Context context = getBaseContext();
+        Resources resources = getResources();
+        FloatingActionButton showMyLocationsButton = new FloatingActionButton(context);
+        showMyLocationsButton.setTitle(resources.getString(R.string.my_locations));
+        showMyLocationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyLocationsDialogFragment dialogFragment = MyLocationsDialogFragment.newInstance();
+                dialogFragment.setLocationPickedListener(MainActivity.this);
+                dialogFragment.show(getSupportFragmentManager(), MyLocationsDialogFragment.TAG);
+            }
+        });
+
+        FloatingActionButton addNewLocationButton = new FloatingActionButton(context);
+        addNewLocationButton.setTitle(resources.getString(R.string.add_location));
+        addNewLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationCreationDialogFragment locationCreationDialogFragment = LocationCreationDialogFragment.newInstance();
+                locationCreationDialogFragment.setOnLocationSavedListener(MainActivity.this);
+                locationCreationDialogFragment.show(getSupportFragmentManager(), LocationCreationDialogFragment.TAG);
+                floatingActionMenu.collapse();
+            }
+        });
+
+        floatingActionMenu.addButton(addNewLocationButton);
+        floatingActionMenu.addButton(showMyLocationsButton);
+    }
+
+    @Override
+    public void onLocationSaved(MyLocation myLocation) {
+        Toast.makeText(this, "SDFDS", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLocationPicked(MyLocation location) {
+        compass.navigateTo(location.getLatitude(), location.getLongitude());
+    }
+
+    private void restoreFragmentsState(Bundle savedInstanceState) {
+
+        if(savedInstanceState == null) {
+            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        LocationCreationDialogFragment dialogFragment =
+                (LocationCreationDialogFragment) fragmentManager.getFragment(savedInstanceState, LocationCreationDialogFragment.TAG);
+        if(dialogFragment != null) {
+            dialogFragment.setOnLocationSavedListener(this);
+        }
+
+        MyLocationsDialogFragment myLocationsDialogFragment =
+                (MyLocationsDialogFragment) fragmentManager.getFragment(savedInstanceState, MyLocationsDialogFragment.TAG);
+        if(myLocationsDialogFragment != null) {
+            myLocationsDialogFragment.setLocationPickedListener(this);
+        }
+    }
+
+    private void saveFragmentsInstanceState(Bundle outState) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        LocationCreationDialogFragment creationDialogFragment =
+                (LocationCreationDialogFragment) fragmentManager.findFragmentByTag(LocationCreationDialogFragment.TAG);
+
+        if(creationDialogFragment != null) {
+            fragmentManager.putFragment(outState, LocationCreationDialogFragment.TAG, creationDialogFragment);
+        }
+
+        MyLocationsDialogFragment myLocationsDialogFragment =
+                (MyLocationsDialogFragment) fragmentManager.findFragmentByTag(MyLocationsDialogFragment.TAG);
+
+        if(myLocationsDialogFragment != null) {
+            fragmentManager.putFragment(outState, MyLocationsDialogFragment.TAG, myLocationsDialogFragment);
+        }
     }
 }
