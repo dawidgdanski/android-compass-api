@@ -21,8 +21,7 @@ import pl.dawidgdanski.compass.ui.validation.LatitudeTextValidator;
 import pl.dawidgdanski.compass.ui.validation.LongitudeTextValidator;
 import pl.dawidgdanski.compass.ui.view.CoordinateEntry;
 
-public class LocationCreationDialogFragment extends DialogFragment implements DialogInterface.OnClickListener,
-        DialogInterface.OnShowListener{
+public class LocationCreationDialogFragment extends DialogFragment implements DialogInterface.OnShowListener{
 
     public static final String TAG = LocationCreationDialogFragment.class.getSimpleName();
 
@@ -54,23 +53,14 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(view)
-                .setPositiveButton(getString(R.string.save), this)
-                .setNegativeButton(getString(R.string.cancel), this)
+                .setPositiveButton(getString(R.string.save), null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create();
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setOnShowListener(this);
 
         return dialog;
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        if(which == DialogInterface.BUTTON_POSITIVE) {
-            onSaveButtonClicked();
-        } else {
-            dismiss();
-        }
     }
 
     @Override
@@ -83,6 +73,13 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
         final Typeface boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
         saveButton.setTypeface(boldTypeface);
         cancelButton.setTypeface(boldTypeface);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveButtonClicked();
+            }
+        });
     }
 
     @Override
@@ -109,6 +106,7 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
             final double longitude = longitudeEntry.getValue();
             if(onLocationSavedListener != null) {
                 onLocationSavedListener.onLocationSaved(new MyLocation(latitude, longitude));
+                dismiss();
             }
         }
     }
