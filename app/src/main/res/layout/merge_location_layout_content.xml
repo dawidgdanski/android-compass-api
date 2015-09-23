@@ -5,6 +5,7 @@
     <TextView android:id="@+id/header_title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:paddingLeft="10dp"
         android:textAppearance="@android:style/TextAppearance.Medium"/>
 
    <pl.dawidgdanski.compass.ui.view.Entry

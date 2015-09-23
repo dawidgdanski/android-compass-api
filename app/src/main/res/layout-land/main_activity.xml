@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compass="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <pl.dawidgdanski.compass.ui.view.CompassView
+            android:id="@+id/compass_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            compass:compass_fraction="75%"
+            compass:arrow_fraction="75%"
+            android:layout_weight="1"/>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <pl.dawidgdanski.compass.ui.view.LocationLayout
+                    compass:header_title="@string/destination"
+                    android:id="@+id/destination_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <pl.dawidgdanski.compass.ui.view.LocationLayout
+                    compass:header_title="@string/my_location"
+                    android:id="@+id/my_location_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
