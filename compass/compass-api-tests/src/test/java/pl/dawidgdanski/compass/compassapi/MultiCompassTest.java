@@ -19,7 +19,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.DefaultLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
 import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
@@ -39,7 +39,7 @@ public class MultiCompassTest extends RobolectricUnitTestCase {
     private AzimuthSupplier azimuthSupplier;
 
     @Mock
-    private NativeLocationSupplier nativeLocationSupplier;
+    private DefaultLocationSupplier nativeLocationSupplier;
 
     @Mock
     private PlayServicesLocationSupplier playServicesLocationSupplier;

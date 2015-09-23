@@ -5,7 +5,7 @@ import android.location.LocationManager;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.DefaultLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 
 @Module
@@ -13,12 +13,12 @@ public class LocationModule {
 
     @Provides
     public Criteria provideLocationCriteria() {
-        return NativeLocationSupplier.getDefaultCriteria();
+        return DefaultLocationSupplier.getDefaultCriteria();
     }
 
     @Provides
-    public NativeLocationSupplier provideLocationSupplier(LocationManager locationManager, Criteria criteria) {
-        return new NativeLocationSupplier(locationManager, criteria);
+    public DefaultLocationSupplier provideDefaultLocationSupplier(LocationManager locationManager, Criteria criteria) {
+        return new DefaultLocationSupplier(locationManager, criteria);
     }
 
     @Provides

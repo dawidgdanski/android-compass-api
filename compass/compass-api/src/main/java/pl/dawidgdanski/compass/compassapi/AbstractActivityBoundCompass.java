@@ -8,7 +8,7 @@ import pl.dawidgdanski.compass.compassapi.location.ActivityBoundLocationSupplier
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.compassapi.util.CompassOptional;
 
-abstract class AbstractActivityBoundCompass extends NativeCompass implements ActivityBoundCompass {
+abstract class AbstractActivityBoundCompass extends DefaultCompass implements ActivityBoundCompass {
 
     private static final ActivityBoundLocationSupplier[] EMPTY = new ActivityBoundLocationSupplier[0];
 

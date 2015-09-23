@@ -13,7 +13,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.DefaultLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.test.RobolectricUnitTestCase;
 import pl.dawidgdanski.compass.compassapi.test.rules.TestExecutionTimeRule;
 
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN, manifest = Config.NONE)
-public class CompassTest extends RobolectricUnitTestCase {
+public class DefaultCompassTest extends RobolectricUnitTestCase {
 
     @Rule
     public final TestRule TEST_EXECUTION_TIME_RULE = new TestExecutionTimeRule();
@@ -31,7 +31,7 @@ public class CompassTest extends RobolectricUnitTestCase {
     AzimuthSupplier azimuthSupplier;
 
     @Mock
-    NativeLocationSupplier locationSupplier;
+    DefaultLocationSupplier locationSupplier;
 
     @Before
     public void setUp() {
@@ -46,7 +46,7 @@ public class CompassTest extends RobolectricUnitTestCase {
             //https://github.com/robolectric/robolectric/issues/2028
         }
 
-        new NativeCompass(null, locationSupplier);
+        new DefaultCompass(null, locationSupplier);
     }
 
     @Test(expected = NullPointerException.class)
@@ -57,7 +57,7 @@ public class CompassTest extends RobolectricUnitTestCase {
             //https://github.com/robolectric/robolectric/issues/2028
         }
 
-        new NativeCompass(azimuthSupplier, null);
+        new DefaultCompass(azimuthSupplier, null);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class CompassTest extends RobolectricUnitTestCase {
             //https://github.com/robolectric/robolectric/issues/2028
         }
 
-        final Compass SUT = new NativeCompass(azimuthSupplier, locationSupplier);
+        final Compass SUT = new DefaultCompass(azimuthSupplier, locationSupplier);
 
         SUT.start();
 
@@ -84,7 +84,7 @@ public class CompassTest extends RobolectricUnitTestCase {
             //https://github.com/robolectric/robolectric/issues/2028
         }
 
-        final Compass SUT = new NativeCompass(azimuthSupplier, locationSupplier);
+        final Compass SUT = new DefaultCompass(azimuthSupplier, locationSupplier);
 
         SUT.stop();
 

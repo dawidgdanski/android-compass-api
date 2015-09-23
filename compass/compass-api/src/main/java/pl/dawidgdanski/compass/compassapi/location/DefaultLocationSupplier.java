@@ -14,7 +14,7 @@ import pl.dawidgdanski.compass.compassapi.exception.LocationAbsentException;
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class NativeLocationSupplier implements LocationSupplier, LocationListener {
+public class DefaultLocationSupplier implements LocationSupplier, LocationListener {
 
     private static final Criteria DEFAULT_CRITERIA;
 
@@ -48,11 +48,11 @@ public class NativeLocationSupplier implements LocationSupplier, LocationListene
 
     private OnLocationChangedListener onLocationChangedListener = OnLocationChangedListener.NULL_LISTENER;
 
-    public NativeLocationSupplier(final LocationManager locationManager) {
+    public DefaultLocationSupplier(final LocationManager locationManager) {
         this(locationManager, getDefaultCriteria());
     }
 
-    public NativeLocationSupplier(final LocationManager locationManager, final Criteria criteria) {
+    public DefaultLocationSupplier(final LocationManager locationManager, final Criteria criteria) {
         CompassPreconditions.checkNotNull(locationManager, "Context cannot be null");
         CompassPreconditions.checkNotNull(criteria, "Location criteria cannot be null");
         this.locationManager = locationManager;

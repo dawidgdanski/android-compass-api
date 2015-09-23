@@ -7,10 +7,10 @@ import dagger.Provides;
 import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
 import pl.dawidgdanski.compass.compassapi.Compass;
 import pl.dawidgdanski.compass.compassapi.MultiCompass;
-import pl.dawidgdanski.compass.compassapi.NativeCompass;
+import pl.dawidgdanski.compass.compassapi.DefaultCompass;
 import pl.dawidgdanski.compass.compassapi.PlayServicesCompass;
 import pl.dawidgdanski.compass.compassapi.geomagnetic.AzimuthSupplier;
-import pl.dawidgdanski.compass.compassapi.location.NativeLocationSupplier;
+import pl.dawidgdanski.compass.compassapi.location.DefaultLocationSupplier;
 import pl.dawidgdanski.compass.compassapi.location.PlayServicesLocationSupplier;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 
@@ -20,8 +20,8 @@ public class CompassModule {
     @Provides
     @Named(Qualifiers.NATIVE_COMPASS)
     public Compass provideNativeCompass(AzimuthSupplier azimuthSupplier,
-                                        NativeLocationSupplier locationSupplier) {
-        return new NativeCompass(azimuthSupplier, locationSupplier);
+                                        DefaultLocationSupplier locationSupplier) {
+        return new DefaultCompass(azimuthSupplier, locationSupplier);
     }
 
     @Provides
@@ -34,7 +34,7 @@ public class CompassModule {
     @Provides
     @Named(Qualifiers.MULTI_COMPASS)
     public ActivityBoundCompass provideMultiCompass(AzimuthSupplier azimuthSupplier,
-                                                    NativeLocationSupplier nativeLocationSupplier,
+                                                    DefaultLocationSupplier nativeLocationSupplier,
                                                     PlayServicesLocationSupplier playServicesLocationSupplier) {
         return new MultiCompass(azimuthSupplier,
                 nativeLocationSupplier,

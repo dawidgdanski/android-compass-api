@@ -11,7 +11,7 @@ import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.compassapi.util.CompassListeners;
 import pl.dawidgdanski.compass.compassapi.util.CompassPreconditions;
 
-public class NativeCompass implements Compass {
+public class DefaultCompass implements Compass {
 
     private final LocationSupplier baseLocationSupplier;
 
@@ -25,8 +25,8 @@ public class NativeCompass implements Compass {
 
     private LocationSupplier.OnLocationChangedListener onLocationChangedListener = LocationSupplier.OnLocationChangedListener.NULL_LISTENER;
 
-    public NativeCompass(AzimuthSupplier azimuthSupplier,
-                         LocationSupplier baseLocationSupplier) {
+    public DefaultCompass(AzimuthSupplier azimuthSupplier,
+                          LocationSupplier baseLocationSupplier) {
 
         CompassPreconditions.checkState(CompassApi.isInitialized(), "Compass API is not initialized, please initialize it in your application.");
 
