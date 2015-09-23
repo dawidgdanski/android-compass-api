@@ -29,6 +29,7 @@ import pl.dawidgdanski.compass.ui.dialog.LocationCreationDialogFragment;
 import pl.dawidgdanski.compass.ui.dialog.MyLocationsDialogFragment;
 import pl.dawidgdanski.compass.ui.view.CompassView;
 import pl.dawidgdanski.compass.ui.view.LocationLayout;
+import pl.dawidgdanski.compass.util.ApplicationUtils;
 
 public class MainActivity extends BaseActivity implements LocationSupplier.OnLocationChangedListener,
         LocationCreationDialogFragment.OnLocationSavedListener,
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        ApplicationUtils.setOrientationChangeEnabled(false, this);
         ButterKnife.bind(this);
         DependencyInjector.getGraph().inject(this);
         setUpActionBar(toolbar);
@@ -112,6 +114,7 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ApplicationUtils.setOrientationChangeEnabled(true, this);
         compass.onActivityDestroyed(this);
         compass = null;
     }
