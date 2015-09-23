@@ -24,6 +24,7 @@ import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.database.model.MyLocation;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
+import pl.dawidgdanski.compass.persistence.LocationPreferenceManager;
 import pl.dawidgdanski.compass.ui.dialog.LocationCreationDialogFragment;
 import pl.dawidgdanski.compass.ui.dialog.MyLocationsDialogFragment;
 import pl.dawidgdanski.compass.ui.view.CompassView;
@@ -36,6 +37,9 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     @Inject
     @Named(Qualifiers.PLAY_SERVICES_COMPASS)
     ActivityBoundCompass compass;
+
+    @Inject
+    LocationPreferenceManager locationPreferenceManager;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -66,7 +70,18 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
         compass.setOnLocationChangedListener(this);
         compass.onActivityCreated(this, savedInstanceState);
 
+        initializeLastDestinationIfExists();
+
         restoreFragmentsState(savedInstanceState);
+    }
+
+    private void initializeLastDestinationIfExists() {
+        MyLocation destination = locationPreferenceManager.getLastDestination();
+
+        if(destination != null) {
+            compass.navigateTo(destination.getLatitude(), destination.getLongitude());
+            destinationLayout.setLocation(destination);
+        }
     }
 
     @Override
@@ -148,6 +163,7 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
     }
 
     private void onDestinationChange(MyLocation location) {
+        locationPreferenceManager.saveDestination(location);
         destinationLayout.setLocation(location);
         compass.navigateTo(location.getLatitude(), location.getLongitude());
     }

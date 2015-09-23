@@ -3,7 +3,7 @@ package pl.dawidgdanski.compass.persistence;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public final class Preferences {
+final class Preferences {
 
     private final SharedPreferences sharedPreferences;
 
