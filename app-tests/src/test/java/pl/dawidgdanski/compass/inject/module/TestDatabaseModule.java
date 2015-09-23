@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.dawidgdanski.compass.database.DatabaseHelper;
+import pl.dawidgdanski.compass.database.model.PersistenceManager;
 import pl.dawidgdanski.compass.inject.Qualifiers;
 
 import static org.mockito.Mockito.spy;
@@ -28,5 +29,10 @@ public class TestDatabaseModule extends DatabaseModule {
     @Override
     public SQLiteDatabase provideWritableDatabase(DatabaseHelper databaseHelper) {
         return spy(super.provideWritableDatabase(databaseHelper));
+    }
+
+    @Override
+    public PersistenceManager providePersistenceManager(Context applicationContext) {
+        return spy(super.providePersistenceManager(applicationContext));
     }
 }
