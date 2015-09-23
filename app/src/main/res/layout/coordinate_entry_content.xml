@@ -9,22 +9,26 @@
         android:weightSum="2">
 
         <pl.dawidgdanski.compass.ui.view.CoordinateEditText
-            android:id="@+id/decimal_part"
+            android:id="@+id/coord_decimal_part"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:hint="@string/decimal_part"
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:text="@string/dot"/>
 
         <pl.dawidgdanski.compass.ui.view.CoordinateEditText
-            android:id="@+id/floating_part"
+            android:id="@+id/coord_floating_part"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:hint="@string/floating_part"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -36,7 +40,8 @@
         android:visibility="invisible"
         android:gravity="center"
         android:ellipsize="none"
-        android:maxLines="1"/>
+        android:textColor="@android:color/holo_red_dark"
+        android:maxLines="2"/>
 
 
 </merge>

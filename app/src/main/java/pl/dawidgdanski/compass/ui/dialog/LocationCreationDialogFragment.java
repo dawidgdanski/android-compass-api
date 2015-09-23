@@ -31,10 +31,10 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
         return dialogFragment;
     }
 
-    @Bind(R.id.latitude_entry)
+    @Bind(R.id.dialog_latitude_entry)
     CoordinateEntry latitudeEntry;
 
-    @Bind(R.id.longitude_entry)
+    @Bind(R.id.dialog_longitude_entry)
     CoordinateEntry longitudeEntry;
 
     @NonNull
@@ -43,16 +43,14 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
 
         Activity context = getActivity();
 
-        LayoutInflater inflater = context.getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.location_creation_dialog_fragment, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.location_creation_dialog_fragment, null);
         ButterKnife.bind(this, view);
         initializeEntries();
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(view)
                 .setPositiveButton(getString(R.string.save), this)
-                .setNegativeButton(getString(android.R.string.cancel), this)
+                .setNegativeButton(getString(R.string.cancel), this)
                 .create();
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,6 +80,12 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
         cancelButton.setTypeface(boldTypeface);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     private void initializeEntries() {
         latitudeEntry.setDecimalPartTextValidator(new LatitudeTextValidator());
         longitudeEntry.setDecimalPartTextValidator(new LongitudeTextValidator());
@@ -90,11 +94,9 @@ public class LocationCreationDialogFragment extends DialogFragment implements Di
     private void onSaveButtonClicked() {
         final boolean result = latitudeEntry.validateSelf() && longitudeEntry.validateSelf();
 
-        final double latitude = latitudeEntry.getValue();
-        final double longitude = longitudeEntry.getValue();
-
         if(result) {
-
+            final double latitude = latitudeEntry.getValue();
+            final double longitude = longitudeEntry.getValue();
         }
     }
 }

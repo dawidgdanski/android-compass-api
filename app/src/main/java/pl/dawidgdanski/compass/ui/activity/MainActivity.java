@@ -1,11 +1,15 @@
 package pl.dawidgdanski.compass.ui.activity;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import javax.inject.Inject;
@@ -18,8 +22,10 @@ import pl.dawidgdanski.compass.compassapi.ActivityBoundCompass;
 import pl.dawidgdanski.compass.compassapi.location.LocationSupplier;
 import pl.dawidgdanski.compass.inject.DependencyInjector;
 import pl.dawidgdanski.compass.inject.Qualifiers;
+import pl.dawidgdanski.compass.ui.dialog.LocationCreationDialogFragment;
 import pl.dawidgdanski.compass.ui.view.CompassView;
 import pl.dawidgdanski.compass.ui.view.LocationLayout;
+import pl.dawidgdanski.compass.util.Constants;
 
 public class MainActivity extends BaseActivity implements LocationSupplier.OnLocationChangedListener {
 
@@ -50,10 +56,37 @@ public class MainActivity extends BaseActivity implements LocationSupplier.OnLoc
         DependencyInjector.getGraph().inject(this);
         setUpActionBar(toolbar);
         setUpActionBarTitle(getString(R.string.app_name));
+        setUpFloatingActionMenu();
 
         compass.setView(compassView.getArrowView());
         compass.setOnLocationChangedListener(this);
         compass.onActivityCreated(this, savedInstanceState);
+    }
+
+    private void setUpFloatingActionMenu() {
+        final Context context = getBaseContext();
+        Resources resources = getResources();
+        FloatingActionButton showMyLocationsButton = new FloatingActionButton(context);
+        showMyLocationsButton.setTitle(resources.getString(R.string.my_locations));
+        showMyLocationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        FloatingActionButton addNewLocationButton = new FloatingActionButton(context);
+        addNewLocationButton.setTitle(resources.getString(R.string.add_location));
+        addNewLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationCreationDialogFragment.newInstance().show(getSupportFragmentManager(), Constants.DIALOG);
+                floatingActionMenu.collapse();
+            }
+        });
+
+        floatingActionMenu.addButton(addNewLocationButton);
+        floatingActionMenu.addButton(showMyLocationsButton);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class CoordinateFloatingPartTextValidator implements Validator<String> {
             final int number = Integer.parseInt(instance);
             final int textLength = instance.length();
             if(!(number >= 0 && textLength > 0 && textLength <= 6)) {
-                throw new ValidationException(R.string.incorect_floating_point_value);
+                throw new ValidationException(R.string.floating_part_precision_places_at_most);
             }
         } catch(IllegalArgumentException e) {
             throw new ValidationException(R.string.incorect_floating_point_value);

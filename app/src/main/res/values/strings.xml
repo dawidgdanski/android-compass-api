@@ -15,4 +15,10 @@
     <string name="save">Save</string>
     <string name="dot">.</string>
     <string name="incorect_floating_point_value">Incorrect floating point value</string>
+    <string name="my_locations">My locations</string>
+    <string name="add_location">Add location</string>
+    <string name="cancel">Cancel</string>
+    <string name="floating_part">Floating part</string>
+    <string name="decimal_part">Decimal part</string>
+    <string name="floating_part_precision_places_at_most">Floating part should have 6 precision places at most</string>
 </resources>

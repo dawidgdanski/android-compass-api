@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Collections;
 
@@ -20,14 +21,18 @@ import pl.dawidgdanski.compass.ui.validation.CoordinateFloatingPartTextValidator
 
 public class CoordinateEntry extends LinearLayout implements SelfValidable, TextWatcher {
 
-    @Bind(R.id.decimal_part)
+    @Bind(R.id.error_text)
+    TextView errorText;
+
+    @Bind(R.id.coord_decimal_part)
     CoordinateEditText decimalPartText;
 
-    @Bind(R.id.floating_part)
+    @Bind(R.id.coord_floating_part)
     CoordinateEditText floatingPartText;
 
     public CoordinateEntry(Context context) {
-        this(context, null);
+        super(context);
+        initialize();
     }
 
     public CoordinateEntry(Context context, AttributeSet attrs) {
@@ -45,14 +50,10 @@ public class CoordinateEntry extends LinearLayout implements SelfValidable, Text
         initialize();
     }
 
+
     private void initialize() {
         setOrientation(VERTICAL);
         inflate(getContext(), R.layout.coordinate_entry_content, this);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
         ButterKnife.bind(this, this);
         decimalPartText.addTextChangedListener(this);
         floatingPartText.addTextChangedListener(this);
@@ -69,9 +70,11 @@ public class CoordinateEntry extends LinearLayout implements SelfValidable, Text
         try {
             decimalPartText.validate();
             floatingPartText.validate();
+            errorText.setVisibility(INVISIBLE);
             return true;
         } catch (ValidationException e) {
-
+            errorText.setText(e.getMessage());
+            errorText.setVisibility(VISIBLE);
             return false;
         }
     }
@@ -92,6 +95,7 @@ public class CoordinateEntry extends LinearLayout implements SelfValidable, Text
     }
 
     public double getValue() {
+        validateSelf();
         return Double.valueOf(String.format("%s.%s", decimalPartText.getText(), floatingPartText.getText()));
     }
 }

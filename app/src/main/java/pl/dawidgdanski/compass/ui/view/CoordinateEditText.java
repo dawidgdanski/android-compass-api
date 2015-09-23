@@ -22,7 +22,7 @@ public class CoordinateEditText extends EditText {
     private final Collection<Validator<String>> textValidators = Lists.newArrayList();
 
     public CoordinateEditText(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public CoordinateEditText(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -32,10 +32,6 @@ public class CoordinateEditText extends EditText {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CoordinateEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    private void initialize() {
-
     }
 
     public void setTextValidators(Collection<Validator<String>> validators) {

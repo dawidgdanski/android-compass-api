@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/entry_latitude"
         android:padding="10dp"/>
+
     <pl.dawidgdanski.compass.ui.view.CoordinateEntry
         android:id="@+id/dialog_latitude_entry"
         android:layout_width="match_parent"
@@ -19,8 +20,9 @@
         android:layout_height="wrap_content"
         android:text="@string/entry_longitude"
         android:padding="10dp"/>
+
     <pl.dawidgdanski.compass.ui.view.CoordinateEntry
-        android:id="@+id/dialo_longitude_entry"
+        android:id="@+id/dialog_longitude_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
